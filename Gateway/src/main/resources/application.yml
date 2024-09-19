@@ -1,8 +1,8 @@
 server:
-  port: 8000
+  port: 8000        # Gateway runs on this port
 
 spring:
   application:
-    name: gateway
+    name: gateway   # name registered in Consul
   config:
-    import: "optional:consul:"
+    import: "optional:consul:"  # imports config from Consul

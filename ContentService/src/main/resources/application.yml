@@ -1,0 +1,8 @@
+server:
+  port: 8081          # ContentService will run on this port
+
+spring:
+  application:
+    name: content-service     # name registered in Consul
+  config:
+    import: "optional:consul:" # Imports config from Consul
