@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.svendzen.contentservice.models.MathProblem;
 import org.svendzen.contentservice.services.MathProblemService;
 
-
 @RestController
 @RequestMapping("api/v1/")
 public class MathProblemController {
