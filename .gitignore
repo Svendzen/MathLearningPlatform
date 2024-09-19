@@ -1,0 +1,92 @@
+# Help files
+HELP.md
+
+# Target directory (build outputs)
+target/
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Maven Wrapper
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+/.mvn/wrapper/
+
+# Logs
+*.log
+
+# IntelliJ IDEA specific files
+.idea/
+*.iws
+*.iml
+*.ipr
+.idea_modules/
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf/
+.idea/**/libraries/
+.idea/**/modules.xml
+.idea/**/vcs.xml
+
+# STS (Spring Tool Suite) specific files
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans/
+.sts4-cache/
+
+# VS Code
+.vscode/
+
+# NetBeans specific files
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# Node.js / React specific files
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build directories (for both Maven and Gradle)
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# Spring Boot devtools
+spring-boot-devtools.properties
+
+# Thumbnails (for IntelliJ or other IDEs)
+.idea/.idea_modules/
+.idea/.idea_modules.xml
+.idea/.idea_modules_local.xml
+
+# Ignore OS specific files
+.DS_Store
+Thumbs.db
+
+# Eclipse specific files
+/.metadata
+/*.class
+/.recommenders
+/.settings
+
+# Exclude generated resources from Spring Boot
+generated/
+
+# Ignore production environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Mac OS specific
+*.DS_Store
+
