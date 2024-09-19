@@ -4,6 +4,5 @@ server:
 spring:
   application:
     name: gateway
-
-    config:
-      import: "optional:consul:"
+  config:
+    import: "optional:consul:"
