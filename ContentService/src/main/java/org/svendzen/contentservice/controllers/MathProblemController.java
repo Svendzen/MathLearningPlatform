@@ -19,4 +19,8 @@ public class MathProblemController {
         return mathProblemService.generateAdditionProblem();
     }
 
+    @GetMapping("math/subtraction")
+    public MathProblem getSubtractionProblem() {
+        return mathProblemService.generateSubtractionProblem();
+    }
 }

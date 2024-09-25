@@ -6,3 +6,8 @@ spring:
     name: content-service     # name registered in Consul
   config:
     import: "optional:consul:" # Imports config from Consul
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
