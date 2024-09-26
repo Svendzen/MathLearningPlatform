@@ -17,8 +17,10 @@ public class ExerciseResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Long studentId;  // The student who completed the exercise - found in UserService
 
+    @Column(nullable = false)
     private Long exerciseId;  // The exercise they completed - found in ContentService
 
     @Column(nullable = false)
