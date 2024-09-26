@@ -1,12 +1,19 @@
 package org.svendzen.contentservice.services;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.svendzen.contentservice.models.MathProblem;
+import org.svendzen.contentservice.models.MathProblemType;
+import org.svendzen.contentservice.repositories.MathProblemRepository;
 
 @Slf4j
 @Service
 public class MathProblemService {
+
+    @Autowired
+    private MathProblemRepository mathProblemRepository;
+
     public MathProblem generateAdditionProblem() {
 
         // generates and returns random addition math problem
@@ -15,9 +22,15 @@ public class MathProblemService {
         String question = num1 + " + " + num2;
         int answer = num1 + num2;
 
+        MathProblem mathProblem = new MathProblem();
+        mathProblem.setQuestion(question);
+        mathProblem.setAnswer(answer);
+        mathProblem.setType(MathProblemType.ADDITION);
+
         log.info("Generated addition math problem: {} = {}", question, answer);
 
-        return new MathProblem(question, answer);
+        // Saving MathProblem to DB and get ID assigned
+        return mathProblemRepository.save(mathProblem);
     }
 
     public MathProblem generateSubtractionProblem() {
@@ -36,8 +49,14 @@ public class MathProblemService {
             answer = num1 - num2;
         }
 
+        MathProblem mathProblem = new MathProblem();
+        mathProblem.setQuestion(question);
+        mathProblem.setAnswer(answer);
+        mathProblem.setType(MathProblemType.SUBTRACTION);
+
         log.info("Generated subtraction math problem: {} = {}", question, answer);
 
-        return new MathProblem(question, answer);
+        // saving
+        return mathProblemRepository.save(mathProblem);
     }
 }
