@@ -1,0 +1,8 @@
+server:
+  port: 8082          # UserService will run on this port
+
+spring:
+  application:
+    name: user-service     # name registered in Consul
+  config:
+    import: "optional:consul:" # Imports config from Consul
