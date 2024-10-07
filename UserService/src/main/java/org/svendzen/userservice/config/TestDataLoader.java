@@ -1,12 +1,9 @@
 package org.svendzen.userservice.config;
 
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.svendzen.userservice.models.Role;
 import org.svendzen.userservice.models.User;
-import org.svendzen.userservice.repositories.UserRepository;
 import org.svendzen.userservice.services.UserService;
 
 @Component
