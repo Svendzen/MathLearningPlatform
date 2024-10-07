@@ -37,8 +37,16 @@ public class UserService {
     }
 
     public User registerUser(User user) {
-        log.info("Registering new user: {}", user.getUsername());
+        log.info("Attempting to register new user: {}", user.getUsername());
 
+        // Check if a user with the same username exists
+        Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
+
+        if(existingUser.isPresent()) {
+            throw new IllegalArgumentException("Username already exits: " + user.getUsername());
+        }
+
+        // Encrypt password before saving the user
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
 
