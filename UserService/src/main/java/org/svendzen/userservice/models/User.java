@@ -22,7 +22,6 @@ public class User {
     private String username;
 
     @NotBlank(message = "Password is required")
-    @Setter(AccessLevel.NONE) // I don't want generated setter here, use custom setter with encryption method instead
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -33,11 +32,4 @@ public class User {
 
     @NotBlank(message = "Last Name is required")
     private String last_name;
-
-
-    public void setPassword(@NotBlank(message = "Password is required") String password) {
-        this.password = password; // Use encryption method to set password here
-        log.warn("You are setting password WITHOUT ENCRYPTION");
-    }
-
 }

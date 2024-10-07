@@ -73,7 +73,7 @@ class UserServiceTest {
     void shouldFindUserById_WhenUserExists() {
         when(userRepository.findById(1L)).thenReturn(Optional.of(student));
 
-        Optional<User> foundUser = userService.findById(1L);
+        Optional<User> foundUser = userService.findUserById(1L);
 
         assertTrue(foundUser.isPresent());
         assertEquals("Ted", foundUser.get().getFirst_name());
@@ -84,7 +84,7 @@ class UserServiceTest {
     void shouldNotFindUserById_WhenUserDoesNotExist() {
         when(userRepository.findById(99L)).thenReturn(Optional.empty());
 
-        Optional<User> foundUser = userService.findById(99L);
+        Optional<User> foundUser = userService.findUserById(99L);
 
         assertFalse(foundUser.isPresent());
         verify(userRepository, times(1)).findById(99L);

@@ -73,7 +73,7 @@ class UserServiceApplicationTests {
 	@Test
 	void shouldFindUserById() {
 		// Test finding a user by ID
-		Optional<User> foundUser = userService.findById(student.getId());
+		Optional<User> foundUser = userService.findUserById(student.getId());
 		assertTrue(foundUser.isPresent());
 		assertEquals("Ted", foundUser.get().getFirst_name());
 	}
@@ -82,7 +82,7 @@ class UserServiceApplicationTests {
 	void shouldDeleteUserById() {
 		// Test deleting a user by ID
 		userService.deleteUser(teacher.getId());
-		Optional<User> deletedUser = userService.findById(teacher.getId());
+		Optional<User> deletedUser = userService.findUserById(teacher.getId());
 		assertFalse(deletedUser.isPresent());
 	}
 
