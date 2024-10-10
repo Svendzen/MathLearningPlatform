@@ -8,18 +8,18 @@ import org.svendzen.contentservice.models.MathProblem;
 import org.svendzen.contentservice.services.MathProblemService;
 
 @RestController
-@RequestMapping("api/v1/")
+@RequestMapping("api/v1/math/")
 public class MathProblemController {
 
     @Autowired
     private MathProblemService mathProblemService;
 
-    @GetMapping("math/addition")
+    @GetMapping("addition")
     public MathProblem getAdditionProblem() {
         return mathProblemService.generateAdditionProblem();
     }
 
-    @GetMapping("math/subtraction")
+    @GetMapping("subtraction")
     public MathProblem getSubtractionProblem() {
         return mathProblemService.generateSubtractionProblem();
     }
