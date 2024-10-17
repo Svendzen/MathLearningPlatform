@@ -18,12 +18,12 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Disable CSRF for H2 console and allow frame options
+        // Disable CSRF and configure access permissions
         http
                 .csrf(csrf -> csrf.disable())  // Disable CSRF protection
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/h2-console/**").permitAll()  // Allow access to H2 console
-                        .anyRequest().authenticated()   // All other requests require authentication
+                        .anyRequest().permitAll()   // Allow all other requests without authentication
                 )
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));  // Disable X-Frame-Options for H2 console
 

@@ -11,6 +11,7 @@ target/
 UserService/.mvn/wrapper/*
 ContentService/.mvn/wrapper/*
 Gateway/.mvn/wrapper/*
+ProgressService/.mvn/wrapper/*
 
 # Ignore all Maven wrapper files in all services
 */.mvn/wrapper/maven-wrapper.jar

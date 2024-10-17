@@ -13,7 +13,7 @@ import org.svendzen.userservice.services.UserService;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("api/v1/users")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
     private final UserService userService;
