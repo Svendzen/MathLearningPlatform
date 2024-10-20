@@ -3,6 +3,10 @@ package org.svendzen.gamificationservice.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.svendzen.gamificationservice.models.StudentTrophy;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface StudentTrophyRepository extends JpaRepository<StudentTrophy, Long> {
-    StudentTrophy findByStudentIdAndMathTopicAndGameMode(Long studentId, String mathTopic, String gameMode);
+    List<StudentTrophy> findByStudentId(Long studentId);
+    Optional<StudentTrophy> findByStudentIdAndMathTopicAndGameMode(Long studentId, String mathTopic, String gameMode);
 }
