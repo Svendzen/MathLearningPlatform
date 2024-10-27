@@ -10,11 +10,11 @@ public class StudentTrophy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @NotBlank
     @Column(nullable = false)
-    private long studentId;
+    private Long studentId;
 
     @NotBlank
     @Column(nullable = false)
