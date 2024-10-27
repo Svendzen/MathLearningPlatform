@@ -101,3 +101,15 @@ generated/
 # Mac OS specific
 *.DS_Store
 
+# Frontend Module with Vite
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.vite/
+frontend/.cache/
+frontend/.parcel-cache/
+frontend/public/static/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
