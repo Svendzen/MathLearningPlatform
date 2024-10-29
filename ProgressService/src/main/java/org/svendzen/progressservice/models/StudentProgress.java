@@ -15,29 +15,32 @@ public class StudentProgress {
 
     // General Stats
     @Column(nullable = false)
-    private int totalExercisesCompleted;
+    private long totalExercisesCompleted;
 
     @Column(nullable = false)
-    private int totalCorrectAnswers;
+    private long totalCorrectAnswers;
 
     @Column(nullable = false)
-    private int totalIncorrectAnswers;
+    private long totalIncorrectAnswers;
+
+    // Dynamic calculation can be performed in the code instead of storing it
+    @Transient  // Not stored in the database
+    public double getOverallAccuracy() {
+        long totalAttempts = totalCorrectAnswers + totalIncorrectAnswers;
+        return totalAttempts == 0 ? 0.0 : ((double) totalCorrectAnswers / totalAttempts);
+    }
+
+    // Game Mode Stats (e.g., Rapid Fire, Multiple Choice)
+    @Column(nullable = false)
+    private long rapidFireExercisesCompleted;
 
     @Column(nullable = false)
-    private double overallAccuracy;  // Correct / (Correct + Incorrect)
+    private long multipleChoiceExercisesCompleted;
 
-    // Game Mode Stats
+    // Topic-Specific Stats (e.g., Addition, Subtraction)
     @Column(nullable = false)
-    private int rapidFireExercisesCompleted;
-
-    @Column(nullable = false)
-    private int multipleChoiceExercisesCompleted;
-
-    // Topic-Specific Stats
-    @Column(nullable = false)
-    private int additionExercisesCompleted;
+    private long additionExercisesCompleted;
 
     @Column(nullable = false)
-    private int subtractionExercisesCompleted;
-
+    private long subtractionExercisesCompleted;
 }
