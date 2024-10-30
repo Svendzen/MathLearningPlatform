@@ -15,6 +15,6 @@ public class ExerciseService {
 
         // Send message to RabbitMQ
         String message = "Student " + studentId + " completed exercise " + exerciseId;
-        publisher.sendExerciseCompletionMessage(message); // needs to be JSON?
+        publisher.sendExerciseCompletionMessage(message); // needs to be JSON
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
 
     @Bean
-    public Queue progressQueue() {
-        return new Queue("progressQueue", false);
+    public Queue exerciseCompletedQueue() {
+        return new Queue("exerciseCompletedQueue", false);
     }
 }
