@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExerciseCompletedListener {
 
-    @RabbitListener(queues = "progressQueue")
+    @RabbitListener(queues = "exerciseCompletedEvent")
     public void handleExerciseCompletedEvent(ExerciseCompletedEvent event) {
         log.info("Received event: {}", event);
 

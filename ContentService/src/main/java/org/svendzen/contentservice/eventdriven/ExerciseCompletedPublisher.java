@@ -7,18 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ExerciseCompletePublisher {
+public class ExerciseCompletedPublisher {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
     @Autowired
-    private ObjectMapper objectMapper;      // This is for JSON conversion
+    private ObjectMapper objectMapper;  // For JSON conversion
 
     public void sendExerciseCompletionMessage(ExerciseCompletedEvent event) {
         try {
             String message = objectMapper.writeValueAsString(event);
-            rabbitTemplate.convertAndSend("progressQueue", message);
+            rabbitTemplate.convertAndSend("exerciseCompletedQueue", message);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
