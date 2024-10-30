@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: progress-service     # name registered in Consul
+  cloud:
+    consul:
+      discovery:
+        enabled: true
+        prefer-ip-address: true
   config:
     import: "optional:consul:" # Imports config from Consul
   rabbitmq:                    # RabbitMQ setup

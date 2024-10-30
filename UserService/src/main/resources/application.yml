@@ -6,6 +6,11 @@ spring:
     active: dev
   application:
     name: user-service     # name registered in Consul
+  cloud:
+    consul:
+      discovery:
+        enabled: true
+        prefer-ip-address: true
   config:
     import: "optional:consul:" # Imports config from Consul
 

@@ -4,5 +4,40 @@ server:
 spring:
   application:
     name: gateway   # name registered in Consul
+
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://user-service  # `lb://` tells the Gateway to use load balancing and service discovery.
+          predicates:
+            - Path=/api/v1/users/**       # Routes all requests with "/users/" to User Service
+
+        - id: content-service
+          uri: lb://content-service
+          predicates:
+            - Path=/api/v1/content/**     # Routes all requests with "/content/" to Content Service
+
+        - id: progress-service
+          uri: lb://progress-service
+          predicates:
+            - Path=/ap/v1/progress/**    # Routes all requests with "/progress/" to Progress Service
+
+        - id: gamification-service
+          uri: lb://gamification-service
+          predicates:
+            - Path=/api/v1/trophies/**    # Routes all requests with "/trophies/" to Gamification Service
+      discovery:
+        locator:
+          enabled: true  # Enables service discovery for routing
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        enabled: true
+        register: true
   config:
     import: "optional:consul:"  # imports config from Consul
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
