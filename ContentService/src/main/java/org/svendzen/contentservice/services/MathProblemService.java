@@ -5,7 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.svendzen.contentservice.models.MathProblem;
 import org.svendzen.contentservice.models.MathProblemType;
+import org.svendzen.contentservice.models.PersistentMathProblem;
 import org.svendzen.contentservice.repositories.MathProblemRepository;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -14,49 +17,48 @@ public class MathProblemService {
     @Autowired
     private MathProblemRepository mathProblemRepository;
 
-    public MathProblem generateAdditionProblem() {
-
-        // generates and returns random addition math problem
-        int num1 = (int) (Math.random() * 10) + 1;  // int 1-10
-        int num2 = (int) (Math.random() * 10) + 1;
-        String question = num1 + " + " + num2;
-        int answer = num1 + num2;
-
-        MathProblem mathProblem = new MathProblem();
-        mathProblem.setQuestion(question);
-        mathProblem.setAnswer(answer);
-        mathProblem.setType(MathProblemType.ADDITION);
-
-        log.info("Generated addition math problem: {} = {}", question, answer);
-
-        // Saving MathProblem to DB and get ID assigned
-        return mathProblemRepository.save(mathProblem);
+    public PersistentMathProblem saveMathProblem(PersistentMathProblem problem) {
+        return mathProblemRepository.save(problem);
     }
 
-    public MathProblem generateSubtractionProblem() {
-
+    public MathProblem generateProblem(MathProblemType type) {
+        MathProblem mathProblem = new MathProblem();
         int num1 = (int) (Math.random() * 10) + 1;
         int num2 = (int) (Math.random() * 10) + 1;
 
-        String question;
-        int answer;
+        switch (type) {
+            case ADDITION:
+                mathProblem.setQuestion(num1 + " + " + num2);
+                mathProblem.setAnswer(num1 + num2);
+                break;
+            case SUBTRACTION:
+                mathProblem.setQuestion(Math.max(num1, num2) + " - " + Math.min(num1, num2));
+                mathProblem.setAnswer(Math.abs(num1 - num2));
+                break;
+            case MULTIPLICATION:
+                mathProblem.setQuestion(num1 + " * " + num2);
+                mathProblem.setAnswer(num1 * num2);
+                break;
+            case DIVISION:
+                // Generate a divisor and answer, then calculate the dividend
+                int divisor = (int) (Math.random() * 9) + 1;  // Ensure divisor is between 1 and 10
+                int answer = (int) (Math.random() * 10) + 1;  // Answer between 1 and 10
+                int dividend = divisor * answer;  // Makes sure division is exact
 
-        if (num1 < num2) {
-            question = num2 + " - " + num1;
-            answer = num2 - num1;
-        } else {
-            question = num1 + " - " + num2;
-            answer = num1 - num2;
+                mathProblem.setQuestion(dividend + " / " + divisor);
+                mathProblem.setAnswer(answer);
+                break;
+
         }
 
-        MathProblem mathProblem = new MathProblem();
-        mathProblem.setQuestion(question);
-        mathProblem.setAnswer(answer);
-        mathProblem.setType(MathProblemType.SUBTRACTION);
-
-        log.info("Generated subtraction math problem: {} = {}", question, answer);
-
-        // saving
-        return mathProblemRepository.save(mathProblem);
+        mathProblem.setType(type);
+        log.info("Generated {} problem: {} = {}", type, mathProblem.getQuestion(), mathProblem.getAnswer());
+        return mathProblem;
     }
+
+    public List<PersistentMathProblem> getPredefinedProblemsByType(MathProblemType type) {
+        return mathProblemRepository.findByType(type);
+    }
+
+
 }

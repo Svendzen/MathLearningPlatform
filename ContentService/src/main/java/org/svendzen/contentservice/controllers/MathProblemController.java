@@ -1,26 +1,25 @@
 package org.svendzen.contentservice.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.svendzen.contentservice.dtos.ProblemRequest;
 import org.svendzen.contentservice.models.MathProblem;
+import org.svendzen.contentservice.models.MathProblemType;
 import org.svendzen.contentservice.services.MathProblemService;
 
 @RestController
-@RequestMapping("api/v1/math/")
+@RequestMapping("api/v1/mathproblem/")
 public class MathProblemController {
 
     @Autowired
     private MathProblemService mathProblemService;
 
-    @GetMapping("addition")
-    public MathProblem getAdditionProblem() {
-        return mathProblemService.generateAdditionProblem();
+    @PostMapping("/generate-problem")
+    public ResponseEntity<MathProblem> generateProblem(@RequestBody ProblemRequest request) {
+        MathProblemType type = request.getType();
+        MathProblem problem = mathProblemService.generateProblem(type);
+        return ResponseEntity.ok(problem);
     }
 
-    @GetMapping("subtraction")
-    public MathProblem getSubtractionProblem() {
-        return mathProblemService.generateSubtractionProblem();
-    }
 }

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.svendzen.contentservice.eventdriven.ExerciseCompletedPublisher;
 
 @Service
-public class ExerciseService {
+public class GameModeService {
 
     @Autowired
     private ExerciseCompletedPublisher publisher;

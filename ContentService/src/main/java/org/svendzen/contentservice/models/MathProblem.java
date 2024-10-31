@@ -1,22 +1,20 @@
-package org.svendzen.contentservice.models;
+    package org.svendzen.contentservice.models;
 
-import jakarta.persistence.*;
-import lombok.Data;
+    import jakarta.persistence.*;
+    import lombok.Data;
 
-@Entity
-@Data
-public class MathProblem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    // Base class for dynamically generated MathProblems
+    @MappedSuperclass
+    @Data
+    public class MathProblem {
+        @Column(nullable = false)
+        private String question;
 
-    @Column(nullable = false)
-    private String question;
+        @Column(nullable = false)
+        private int answer;
 
-    @Column(nullable = false)
-    private int answer;
+        @Enumerated(EnumType.STRING)
+        @Column(nullable = false)
+        private MathProblemType type;
+    }
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private MathProblemType type;
-}
