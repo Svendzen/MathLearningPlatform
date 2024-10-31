@@ -3,10 +3,10 @@ version: '3.8'
 services:
   consul-dev:
     image: hashicorp/consul:1.19.2
-    container_name: consul-dev
+    container_name: consul
     ports:
       - '8500:8500'
-    command: agent -dev -node=cards -client=0.0.0.0 -log-level=INFO
+    command: agent -dev -node=math -client=0.0.0.0 -log-level=INFO
     networks:
       - learning-services
 
@@ -17,6 +17,16 @@ services:
       - '5672:5672'   # Messaging Port between Rabbit clients
     networks:
       - learning-services
+
+  consul-importer:
+    image: consul-importer:1.19.2
+    container_name: consul-importer
+    depends_on:
+      - consul-dev
+    networks:
+      - learning-services
+
+
 networks:
   learning-services:
     driver: bridge
