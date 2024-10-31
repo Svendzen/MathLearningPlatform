@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.svendzen</groupId>
-	<artifactId>ContentService</artifactId>
+	<artifactId>contentservice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ContentService</name>
+	<name>contentservice</name>
 	<description>ContentService</description>
 	<url/>
 	<licenses>
