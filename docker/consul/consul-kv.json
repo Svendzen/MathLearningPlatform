@@ -1,27 +1,17 @@
 [
-  {
-    "key": "config/",
-    "flags": 0,
-    "value": ""
-  },
-  {
-    "key": "config/contentservice,dev/",
-    "flags": 0,
-    "value": ""
-  },
-  {
-    "key": "config/contentservice,dev/application.yml",
-    "flags": 0,
-    "value": "c2VydmVyOgogcG9ydDogOTAwMA=="
-  },
-  {
-    "key": "config/contentservice,docker/",
-    "flags": 0,
-    "value": ""
-  },
-  {
-    "key": "config/contentservice,docker/application.yml",
-    "flags": 0,
-    "value": "c3ByaW5nOgogcmFiYml0bXE6CiAgaG9zdDogcmFiYml0bXEKICBwb3J0OiA1NjcyCiAgdXNlcm5hbWU6IGd1ZXN0CiAgcGFzc3dvcmQ6IGd1ZXN0"
-  }
+	{
+		"key": "config/",
+		"flags": 0,
+		"value": ""
+	},
+	{
+		"key": "config/contentservice,docker/",
+		"flags": 0,
+		"value": ""
+	},
+	{
+		"key": "config/contentservice,docker/application.yml",
+		"flags": 0,
+		"value": "c3ByaW5nOgogcmFiYml0bXE6CiAgaG9zdDogcmFiYml0bXEKICBwb3J0OiA1NjcyCiAgdXNlcm5hbWU6IGd1ZXN0CiAgcGFzc3dvcmQ6IGd1ZXN0"
+	}
 ]

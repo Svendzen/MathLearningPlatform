@@ -10,12 +10,12 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CLOUD_CONSUL_HOST=consul
     depends_on:
-      - rabbitMQ
-      - consul-importer
+      - rabbitmq
+      - consul-dev
     networks:
       - learning-services
 
-  contentService:
+  contentservice:
     image: contentservice:0.0.1-SNAPSHOT
     ports:
       - '8081:8081'
@@ -23,8 +23,8 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CLOUD_CONSUL_HOST=consul
     depends_on:
-      - rabbitMQ
-      - consul-importer
+      - rabbitmq
+      - consul-dev
     networks:
       - learning-services
 
@@ -38,7 +38,7 @@ services:
     networks:
       - learning-services
 
-  rabbitMQ:
+  rabbitmq:
     image: rabbitmq:4-management
     container_name: rabbitmq
     ports:

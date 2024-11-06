@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: progress-service     # name registered in Consul
+    name: progressservice     # name registered in Consul
   cloud:
     consul:
       discovery:

@@ -11,8 +11,14 @@ spring:
         prefer-ip-address: true
   config:
     import: "optional:consul:" # Imports config from Consul
- # rabbitmq:                    # RabbitMQ setup
- #   host: localhost
- #   port: 5672
- #   username: guest
- #   password: guest
+#  rabbitmq:                    # RabbitMQ setup
+#    host: localhost
+#    port: 5672
+#    username: guest
+#    password: guest
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

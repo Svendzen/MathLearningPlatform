@@ -9,7 +9,7 @@ import org.svendzen.contentservice.models.MathProblemType;
 import org.svendzen.contentservice.services.MathProblemService;
 
 @RestController
-@RequestMapping("api/v1/mathproblem/")
+@RequestMapping("api/v1/content/mathproblem/")
 public class MathProblemController {
 
     @Autowired
