@@ -7,11 +7,12 @@ services:
     ports:
       - '8000:8000'
     environment:
+      - SERVER_PORT=8000
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CLOUD_CONSUL_HOST=consul
     depends_on:
       - rabbitmq
-      - consul-dev
+      - consul
     networks:
       - learning-services
 
@@ -20,21 +21,71 @@ services:
     ports:
       - '8081:8081'
     environment:
+      - SERVER_PORT=8081
+      - DB_USERNAME=root
+      - DB_PASSWORD=secret
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CLOUD_CONSUL_HOST=consul
     depends_on:
       - rabbitmq
-      - consul-dev
+      - consul
     networks:
       - learning-services
 
+  userservice:
+    image: userservice:0.0.1-SNAPSHOT
+    ports:
+      - '8082:8082'
+    environment:
+      - SERVER_PORT=8082
+      - DB_USERNAME=root
+      - DB_PASSWORD=secret
+      - SPRING_PROFILES_ACTIVE=docker,dev
+      - SPRING_CLOUD_CONSUL_HOST=consul
+    depends_on:
+      - rabbitmq
+      - consul
+    networks:
+      - learning-services
 
-  consul-dev:
+  progressservice:
+    image: progressservice:0.0.1-SNAPSHOT
+    ports:
+      - '8083:8083'
+    environment:
+      - SERVER_PORT=8083
+      - DB_USERNAME=root
+      - DB_PASSWORD=secret
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONSUL_HOST=consul
+    depends_on:
+      - rabbitmq
+      - consul
+    networks:
+      - learning-services
+
+  gamificationservice:
+    image: gamificationservice:0.0.1-SNAPSHOT
+    ports:
+      - '8084:8084'
+    environment:
+      - SERVER_PORT=8084
+      - DB_USERNAME=root
+      - DB_PASSWORD=secret
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_CLOUD_CONSUL_HOST=consul
+    depends_on:
+      - rabbitmq
+      - consul
+    networks:
+      - learning-services
+
+  consul:
     image: hashicorp/consul:1.19.2
     container_name: consul
     ports:
       - '8500:8500'
-    command: agent -dev -node=math -client=0.0.0.0 -log-level=INFO
+    command: agent -dev -node=math -client=0.0.0.0 -log-level=ERROR
     networks:
       - learning-services
 
@@ -51,7 +102,7 @@ services:
     image: consul-importer:1.19.2
     container_name: consul-importer
     depends_on:
-      - consul-dev
+      - consul
     networks:
       - learning-services
 

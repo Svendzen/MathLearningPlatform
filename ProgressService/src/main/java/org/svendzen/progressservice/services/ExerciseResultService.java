@@ -23,11 +23,6 @@ public class ExerciseResultService {
         return exerciseResultRepository.findByStudentId(studentId);
     }
 
-    // Get all exercise results for a specific exercise (e.g., for performance analysis)
-    public List<ExerciseResult> getResultsByExerciseId(Long exerciseId) {
-        return exerciseResultRepository.findByExerciseId(exerciseId);
-    }
-
     // Calculate the student's overall score based on their results
     public double calculateOverallScore(Long studentId) {
         List<ExerciseResult> results = exerciseResultRepository.findByStudentId(studentId);

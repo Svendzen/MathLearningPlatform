@@ -1,5 +1,5 @@
 server:
-  port: 8082          # UserService will run on this port
+  port: ${SERVER_PORT:8082}          # UserService will run on this port
 
 spring:
   profiles:
@@ -13,23 +13,3 @@ spring:
         prefer-ip-address: true
   config:
     import: "optional:consul:" # Imports config from Consul
-
----
-# Development profile config
-spring:
-  config:
-    activate:
-      on-profile: dev   # This section is for the dev profile
-  datasource:
-    url: jdbc:h2:mem:userdb;DB_CLOSE_DELAY=-1 # In-memory db for development
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: sa
-  h2:
-    console:
-      enabled: true    # Enables H2 Console
-  jpa:
-    hibernate:
-      ddl-auto: update # Updates schema automatically
-    show-sql: true     # Show SQL queries in console
-    database-platform: org.hibernate.dialect.H2Dialect

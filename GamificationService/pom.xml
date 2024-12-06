@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>org.svendzen</groupId>
-	<artifactId>GamificationService</artifactId>
+	<artifactId>gamificationservice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>GamificationService</name>
+	<name>gamificationservice</name>
 	<description>GamificationService</description>
 	<url/>
 	<licenses>

@@ -1,24 +1,19 @@
 server:
-  port: 8081          # ContentService will run on this port
+  port: ${SERVER_PORT:8081}          # ContentService will run on this port
 
 spring:
   application:
     name: contentservice     # name registered in Consul
+  rabbitmq: # RabbitMQ setup
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
   cloud:
     consul:
       discovery:
         enabled: true
         prefer-ip-address: true
   config:
-    import: "optional:consul:" # Imports config from Consul
-#  rabbitmq:                    # RabbitMQ setup
-#    host: localhost
-#    port: 5672
-#    username: guest
-#    password: guest
+    import: "optional:consul:" # Imports optional configurations from Consul
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health

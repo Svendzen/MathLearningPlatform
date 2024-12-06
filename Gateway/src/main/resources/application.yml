@@ -1,5 +1,5 @@
 server:
-  port: 8000        # Gateway runs on this port
+  port: ${SERVER_PORT:8000}        # Gateway runs on this port
 
 spring:
   application:
@@ -9,7 +9,7 @@ spring:
     gateway:
       routes:
         - id: userservice
-          uri: lb://user-service  # `lb://` tells the Gateway to use load balancing and service discovery.
+          uri: lb://userservice  # `lb://` tells the Gateway to use load balancing and service discovery.
           predicates:
             - Path=/api/v1/users/**       # Routes all requests with "/api/v1/users/" to User Service
 
@@ -21,15 +21,17 @@ spring:
         - id: progressservice
           uri: lb://progressservice
           predicates:
-            - Path=/api/v1/progress/**    # Routes all requests with "/progress/" to Progress Service
+            - Path=/api/v1/progress/**    # Routes all requests with "/api/v1/progress/" to Progress Service
 
         - id: gamificationservice
           uri: lb://gamificationservice
           predicates:
-            - Path=/api/v1/trophies/**    # Routes all requests with "/trophies/" to Gamification Service
+            - Path=/api/v1/gamification/**    # Routes all requests with "/api/v1/gamification/" to Gamification Service
+
       discovery:
         locator:
           enabled: true  # Enables service discovery for routing
+
     consul:
       host: localhost
       port: 8500
@@ -37,8 +39,10 @@ spring:
         enabled: true
         register: true
         prefer-ip-address: true
+
   config:
     import: "optional:consul:"  # imports config from Consul
+
 logging:
   level:
-    org.springframework.cloud.gateway: DEBUG
+    org.springframework.cloud.gateway: DEBUG # Switch to INFO for production

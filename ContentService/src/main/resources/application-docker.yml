@@ -1,24 +1,6 @@
-server:
-  port: 8081          # ContentService will run on this port
-
 spring:
-  application:
-    name: contentservice     # name registered in Consul
-  cloud:
-    consul:
-      discovery:
-        enabled: true
-        prefer-ip-address: true
-  config:
-    import: "optional:consul:" # Imports config from Consul
-  rabbitmq:                    # RabbitMQ setup
-    host: rabbitmq
+  rabbitmq:
+    host: rabbitmq # Hostname matches the RabbitMQ container name in Docker Compose
     port: 5672
     username: guest
     password: guest
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health
