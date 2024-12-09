@@ -1,7 +1,48 @@
-version: '3.8'
-
 services:
 
+  # Core Infrastructure Services
+  consul:
+    image: hashicorp/consul:1.19.2
+    container_name: consul
+    ports:
+      - '8500:8500'
+    command: agent -dev -node=math -client=0.0.0.0 -log-level=ERROR
+    networks:
+      - learning-services
+
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: rabbitmq
+    ports:
+      - '15672:15672' # Rabbit Console
+      - '5672:5672'   # Messaging Port between Rabbit clients
+    networks:
+      - learning-services
+
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: math
+      POSTGRES_PASSWORD: math
+      POSTGRES_DB: mathplatform
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - learning-services
+
+  consul-importer:
+    image: consul-importer:1.19.2
+    container_name: consul-importer
+    depends_on:
+      - consul
+    networks:
+      - learning-services
+
+  # Application Services
   gateway:
     image: gateway:0.0.1-SNAPSHOT
     ports:
@@ -22,13 +63,14 @@ services:
       - '8081:8081'
     environment:
       - SERVER_PORT=8081
-      - DB_USERNAME=root
-      - DB_PASSWORD=secret
+      - DB_USERNAME=math
+      - DB_PASSWORD=math
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CLOUD_CONSUL_HOST=consul
     depends_on:
       - rabbitmq
       - consul
+      - postgres
     networks:
       - learning-services
 
@@ -38,13 +80,14 @@ services:
       - '8082:8082'
     environment:
       - SERVER_PORT=8082
-      - DB_USERNAME=root
-      - DB_PASSWORD=secret
-      - SPRING_PROFILES_ACTIVE=docker,dev
+      - DB_USERNAME=math
+      - DB_PASSWORD=math
+      - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CLOUD_CONSUL_HOST=consul
     depends_on:
       - rabbitmq
       - consul
+      - postgres
     networks:
       - learning-services
 
@@ -54,13 +97,14 @@ services:
       - '8083:8083'
     environment:
       - SERVER_PORT=8083
-      - DB_USERNAME=root
-      - DB_PASSWORD=secret
+      - DB_USERNAME=math
+      - DB_PASSWORD=math
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CLOUD_CONSUL_HOST=consul
     depends_on:
       - rabbitmq
       - consul
+      - postgres
     networks:
       - learning-services
 
@@ -70,43 +114,20 @@ services:
       - '8084:8084'
     environment:
       - SERVER_PORT=8084
-      - DB_USERNAME=root
-      - DB_PASSWORD=secret
+      - DB_USERNAME=math
+      - DB_PASSWORD=math
       - SPRING_PROFILES_ACTIVE=docker
       - SPRING_CLOUD_CONSUL_HOST=consul
     depends_on:
       - rabbitmq
       - consul
+      - postgres
     networks:
       - learning-services
-
-  consul:
-    image: hashicorp/consul:1.19.2
-    container_name: consul
-    ports:
-      - '8500:8500'
-    command: agent -dev -node=math -client=0.0.0.0 -log-level=ERROR
-    networks:
-      - learning-services
-
-  rabbitmq:
-    image: rabbitmq:4-management
-    container_name: rabbitmq
-    ports:
-      - '15672:15672' # Rabbit Console
-      - '5672:5672'   # Messaging Port between Rabbit clients
-    networks:
-      - learning-services
-
-  consul-importer:
-    image: consul-importer:1.19.2
-    container_name: consul-importer
-    depends_on:
-      - consul
-    networks:
-      - learning-services
-
 
 networks:
   learning-services:
     driver: bridge
+
+volumes:
+  postgres_data:

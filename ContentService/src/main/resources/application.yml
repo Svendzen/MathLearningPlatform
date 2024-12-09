@@ -16,4 +16,16 @@ spring:
         prefer-ip-address: true
   config:
     import: "optional:consul:" # Imports optional configurations from Consul
-
+  datasource:
+    url: jdbc:postgresql://postgres:5432/mathplatform
+    username: math
+    password: math
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: content_schema
+    show-sql: true
