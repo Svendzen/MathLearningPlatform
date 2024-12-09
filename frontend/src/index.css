@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Some global styles for mathematical content */
+@layer base {
+    .math-content {
+        @apply space-y-equation font-serif;
+    }
+}
