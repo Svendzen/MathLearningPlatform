@@ -20,7 +20,7 @@ services:
       - learning-services
 
   postgres:
-    image: postgres:15
+    image: postgres:17.0
     container_name: postgres
     restart: always
     environment:

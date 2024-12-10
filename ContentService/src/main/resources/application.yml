@@ -29,3 +29,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         default_schema: content_schema
     show-sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    schemas: content_schema
