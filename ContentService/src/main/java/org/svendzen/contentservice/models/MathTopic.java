@@ -1,6 +1,9 @@
 package org.svendzen.contentservice.models;
 
-public enum MathProblemType {
+/**
+ * Enum representing the types of math problems.
+ */
+public enum MathTopic {
     ADDITION,
     SUBTRACTION,
     MULTIPLICATION,

@@ -2,8 +2,10 @@ package org.svendzen.contentservice.services;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.svendzen.contentservice.models.MathProblem;
-import org.svendzen.contentservice.models.MathProblemType;
+import org.svendzen.contentservice.models.MathTopic;
+import org.svendzen.contentservice.repositories.PersistentMathProblemRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,15 +13,17 @@ class MathProblemServiceTest {
 
     private MathProblemService mathProblemService;
 
+    PersistentMathProblemRepository persistentMathProblemRepository;
+
     @BeforeEach
     void setUp() {
-        mathProblemService = new MathProblemService();
+        mathProblemService = new MathProblemService(persistentMathProblemRepository);
     }
 
     @Test
     void testGenerateAdditionProblem() {
         // Call the method
-        MathProblem problem = mathProblemService.generateProblem(MathProblemType.ADDITION);
+        MathProblem problem = mathProblemService.generateProblem(MathTopic.ADDITION);
 
         // Verify that the question contains a "+" symbol
         assertTrue(problem.getQuestion().contains("+"), "The question should contain a plus sign");
@@ -35,7 +39,7 @@ class MathProblemServiceTest {
     @Test
     void testGenerateSubtractionProblem() {
         // Call the method
-        MathProblem problem = mathProblemService.generateProblem(MathProblemType.SUBTRACTION);
+        MathProblem problem = mathProblemService.generateProblem(MathTopic.SUBTRACTION);
 
         // Verify that the question contains a "-" symbol
         assertTrue(problem.getQuestion().contains("-"), "The question should contain a minus sign");
@@ -51,7 +55,7 @@ class MathProblemServiceTest {
     @Test
     void testGenerateMultiplicationProblem() {
         // Call the method
-        MathProblem problem = mathProblemService.generateProblem(MathProblemType.MULTIPLICATION);
+        MathProblem problem = mathProblemService.generateProblem(MathTopic.MULTIPLICATION);
 
         // Verify that the question contains a "*" symbol
         assertTrue(problem.getQuestion().contains("*"), "The question should contain a multiplication sign");
@@ -67,7 +71,7 @@ class MathProblemServiceTest {
     @Test
     void testGenerateDivisionProblem() {
         // Call the method
-        MathProblem problem = mathProblemService.generateProblem(MathProblemType.DIVISION);
+        MathProblem problem = mathProblemService.generateProblem(MathTopic.DIVISION);
 
         // Verify that the question contains a "/" symbol
         assertTrue(problem.getQuestion().contains("/"), "The question should contain a division sign");

@@ -24,7 +24,7 @@ public class ExerciseResult {
     private String mathTopic;  // Topic like "Addition". Can be "Mixed" for custom exercise
 
     @Column(nullable = false)
-    private String gameMode;   // Game mode like "Rapid Fire". "Custom" for custom exercises
+    private String gameMode;   // Game mode like "Classic Mode". "Custom" for custom exercises
 
     @Column(nullable = false)
     private int totalQuestions;  // Total questions in exercise

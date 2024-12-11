@@ -30,7 +30,7 @@ public class StudentProgress {
         return totalAttempts == 0 ? 0.0 : ((double) totalCorrectAnswers / totalAttempts);
     }
 
-    // Game Mode Stats (e.g., Rapid Fire, Multiple Choice)
+    // Game Mode Stats (e.g., Classic Mode, Multiple Choice)
     @Column(nullable = false)
     private long rapidFireExercisesCompleted;
 

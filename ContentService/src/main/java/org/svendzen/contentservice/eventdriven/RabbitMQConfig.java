@@ -9,6 +9,7 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue exerciseCompletedQueue() {
-        return new Queue("exerciseCompletedQueue", false);
+        // Setting durable to true ensures the queue persists even after RabbitMQ restarts
+        return new Queue("exerciseCompletedQueue", true);
     }
 }

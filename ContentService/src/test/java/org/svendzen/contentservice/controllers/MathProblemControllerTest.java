@@ -1,8 +1,9 @@
 package org.svendzen.contentservice.controllers;
 
 import org.junit.jupiter.api.Test;
+import org.svendzen.contentservice.models.DynamicMathProblem;
 import org.svendzen.contentservice.models.MathProblem;
-import org.svendzen.contentservice.models.MathProblemType;
+import org.svendzen.contentservice.models.MathTopic;
 import org.svendzen.contentservice.services.MathProblemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -27,13 +28,13 @@ class MathProblemControllerTest {
     @Test
     void testGenerateProblem() throws Exception {
         // Create a sample MathProblem to be returned by the service
-        MathProblem mockProblem = new MathProblem();
+        DynamicMathProblem mockProblem = new DynamicMathProblem();
         mockProblem.setQuestion("5 + 3");
         mockProblem.setAnswer(8);
-        mockProblem.setType(MathProblemType.ADDITION);
+        mockProblem.setType(MathTopic.ADDITION);
 
         // Mock the service method
-        when(mathProblemService.generateProblem(MathProblemType.ADDITION)).thenReturn(mockProblem);
+        when(mathProblemService.generateProblem(MathTopic.ADDITION)).thenReturn(mockProblem);
 
         // Perform the request and verify the result
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/mathproblem/generate-problem")
@@ -45,6 +46,6 @@ class MathProblemControllerTest {
                 .andExpect(jsonPath("$.type", is("ADDITION")));
 
         // Verify that the service method was called once with the specified type
-        verify(mathProblemService, times(1)).generateProblem(MathProblemType.ADDITION);
+        verify(mathProblemService, times(1)).generateProblem(MathTopic.ADDITION);
     }
 }

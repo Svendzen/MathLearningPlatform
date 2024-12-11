@@ -1,27 +1,18 @@
 package org.svendzen.contentservice.eventdriven;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ExerciseCompletedPublisher {
 
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
+    private final RabbitTemplate rabbitTemplate;
 
-    @Autowired
-    private ObjectMapper objectMapper;  // For JSON conversion
-
-    public void sendExerciseCompletionMessage(ExerciseCompletedEvent event) {
-        try {
-            String message = objectMapper.writeValueAsString(event);
-            rabbitTemplate.convertAndSend("exerciseCompletedQueue", message);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+    public ExerciseCompletedPublisher(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
     }
 
+    public void sendExerciseCompletedEvent(ExerciseCompletedEvent event) {
+        rabbitTemplate.convertAndSend("exerciseCompletedQueue", event);
+    }
 }
