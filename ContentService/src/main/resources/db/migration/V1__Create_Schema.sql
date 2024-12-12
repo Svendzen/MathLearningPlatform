@@ -7,14 +7,11 @@ CREATE TABLE content_schema.game_mode (
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     total_questions INT NOT NULL,
-    max_points_per_question INT NOT NULL,
-    seconds_per_question INT DEFAULT 0, -- Default value set to 0
+    max_points_per_question INT NOT NULL DEFAULT 1000, -- Default max points per question
+    milliseconds_per_question INT DEFAULT 0, -- Default value in milliseconds; 0 = no time limit
     is_score_based_on_time BOOLEAN NOT NULL,
     priority INT NOT NULL
-);
-
--- NOTE: Default `seconds_per_question` value is `0`, which means there is no time limit.
-
+    );
 
 -- Create table for GameMode supported topics
 CREATE TABLE content_schema.game_mode_supported_topics (
