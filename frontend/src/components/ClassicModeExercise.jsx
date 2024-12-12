@@ -39,7 +39,7 @@ function ClassicModeExercise({ exercise, onComplete }) {
             } else {
                 onComplete(answers); // Call onComplete when the exercise ends
             }
-        }, 2000); // 2-second delay for feedback display
+        }, 1500); // 2-second delay for feedback display
     };
 
     return (
