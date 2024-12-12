@@ -14,29 +14,23 @@ function Exercise() {
     // Extract the topic from the query string
     const searchParams = new URLSearchParams(location.search);
     const topic = searchParams.get("topic");
-    console.log("Parsed topic:", topic);
-    console.log("gameMode:", gameMode);
-
 
     useEffect(() => {
-        console.log("gameMode:", gameMode);
-        console.log("topic:", topic);
-
         async function fetchExercise() {
             try {
                 // Validate the topic before making the API call
                 if (!validTopics.includes(topic)) {
                     console.error(`Invalid topic: ${topic}`);
-                    setError(`Invalid topic: ${topic}`);
-                    return;
+                    throw new Error(`Invalid topic: ${topic}`);
                 }
 
-                console.log("Fetching exercise...");
+                console.log(`Fetching exercise for gameMode: ${gameMode}, topic: ${topic}`);
                 const response = await api.post(`/content/gamemode/initialize`, {
                     gameModeId: gameMode,
                     topic,
                 });
-                console.log("API Response:", response);
+
+                console.log("Exercise fetched successfully:", response);
                 setExercise(response);
             } catch (error) {
                 console.error("Error initializing exercise:", error);
@@ -44,11 +38,9 @@ function Exercise() {
             }
         }
 
-        if (topic) {
-            console.log("Calling fetchExercise...");
-            fetchExercise();
-        }
+        if (topic) fetchExercise();
     }, [gameMode, topic]);
+
 
     const handleComplete = (answers) => {
         console.log("Exercise completed!", answers);
