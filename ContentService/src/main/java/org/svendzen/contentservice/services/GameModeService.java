@@ -57,21 +57,21 @@ public class GameModeService {
      *
      * @param gameModeId  The ID of the game mode to initialize.
      * @param topic       The MathTopic for the problems.
-     * @param problemCount The number of problems to include.
      * @return The initialized GameMode, or null if the game mode is not found.
      */
-    public GameMode initializeGameMode(Long gameModeId, MathTopic topic, int problemCount) {
+    public GameMode initializeGameMode(Long gameModeId, MathTopic topic) {
         GameMode gameMode = getGameModeById(gameModeId);
         if (gameMode == null) {
             return null; // GameMode not found
         }
 
         // Generate or fetch math problems
-        List<MathProblem> problems = mathProblemService.getProblems(topic, problemCount, true, true);
+        List<MathProblem> problems = mathProblemService.getProblems(topic, gameMode.getTotalQuestions(), true, true);
         gameMode.setProblems(problems);
 
         return gameMode;
     }
+
 
     /**
      * Retrieves game modes supporting a given MathTopic, ordered by priority.

@@ -1,8 +1,11 @@
 package org.svendzen.contentservice.controllers;
 
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.svendzen.contentservice.dtos.GameModeRequest;
 import org.svendzen.contentservice.eventdriven.ExerciseCompletedEvent;
 import org.svendzen.contentservice.models.GameMode;
 import org.svendzen.contentservice.models.MathTopic;
@@ -12,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/content/gamemode/")
+@Slf4j
 public class GameModeController {
 
     @Autowired
@@ -32,12 +36,18 @@ public class GameModeController {
      * Initialize a game mode by topic and number of problems.
      */
     @PostMapping("/initialize")
-    public ResponseEntity<GameMode> initializeGameMode(
-            @RequestParam Long gameModeId,
-            @RequestParam MathTopic topic,
-            @RequestParam int problemCount) {
+    public ResponseEntity<GameMode> initializeGameMode(@RequestBody GameModeRequest request) {
+        log.info("Initializing GameMode: id={}, topic={}", request.getGameModeId(), request.getTopic());
 
-        GameMode initializedGameMode = gameModeService.initializeGameMode(gameModeId, topic, problemCount);
+        GameMode initializedGameMode = gameModeService.initializeGameMode(
+                request.getGameModeId(),
+                request.getTopic()
+        );
+
+        if (initializedGameMode == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
         return ResponseEntity.ok(initializedGameMode);
     }
 
