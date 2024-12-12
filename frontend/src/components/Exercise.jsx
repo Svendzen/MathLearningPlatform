@@ -39,12 +39,6 @@ function Exercise() {
         if (topic) fetchExercise();
     }, [gameMode, topic]);
 
-    const handleComplete = (answers) => {
-        console.log("Exercise completed!", answers);
-        alert("Exercise completed!");
-        navigate(-1);
-    };
-
     if (error) return <p className="text-red-500">{error}</p>;
     if (!exercise) return <p>Loading...</p>;
 
@@ -83,7 +77,7 @@ function Exercise() {
             </div>
 
             {exercise.name === "Classic Mode" && (
-                <ClassicModeExercise exercise={exercise} onComplete={handleComplete} />
+                <ClassicModeExercise exercise={exercise} />
             )}
         </div>
     );
