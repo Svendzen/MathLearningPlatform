@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 
 function ClassicModeExercise({ exercise, onComplete }) {
@@ -8,6 +8,13 @@ function ClassicModeExercise({ exercise, onComplete }) {
     const inputRef = useRef(null); // Ref for the input field
 
     const currentProblem = exercise.problems[currentIndex];
+
+    useEffect(() => {
+        // Focus the input field whenever the current problem changes
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, [currentIndex]);
 
     const handleAnswerSubmit = (answer) => {
         if (answer === null || answer === undefined) return; // Prevent empty answers
@@ -29,7 +36,6 @@ function ClassicModeExercise({ exercise, onComplete }) {
             if (currentIndex < exercise.problems.length - 1) {
                 setCurrentIndex(currentIndex + 1);
                 inputRef.current.value = ""; // Clear the input field
-                inputRef.current.focus(); // Keep focus on the input field
             } else {
                 onComplete(answers); // Call onComplete when the exercise ends
             }
