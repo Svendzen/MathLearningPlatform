@@ -1,4 +1,4 @@
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../api";
 import ClassicModeExercise from "./ClassicModeExercise";
@@ -6,19 +6,17 @@ import { validTopics } from "./Topics";
 
 function Exercise() {
     const { gameMode } = useParams();
-    const navigate = useNavigate(); // Add back useNavigate
-    const location = useLocation(); // Keep useLocation for query parameters
+    const navigate = useNavigate();
+    const location = useLocation();
     const [exercise, setExercise] = useState(null);
     const [error, setError] = useState(null);
 
-    // Extract the topic from the query string
     const searchParams = new URLSearchParams(location.search);
     const topic = searchParams.get("topic");
 
     useEffect(() => {
         async function fetchExercise() {
             try {
-                // Validate the topic before making the API call
                 if (!validTopics.includes(topic)) {
                     console.error(`Invalid topic: ${topic}`);
                     throw new Error(`Invalid topic: ${topic}`);
@@ -41,11 +39,10 @@ function Exercise() {
         if (topic) fetchExercise();
     }, [gameMode, topic]);
 
-
     const handleComplete = (answers) => {
         console.log("Exercise completed!", answers);
         alert("Exercise completed!");
-        navigate(-1); // Go back to the topics
+        navigate(-1);
     };
 
     if (error) return <p className="text-red-500">{error}</p>;
@@ -53,19 +50,38 @@ function Exercise() {
 
     return (
         <div className="p-4">
+            {/* Breadcrumb navigation */}
+            <nav className="mb-4">
+                <Link to="/modules" className="text-blue-500 underline">Modules</Link> &gt;{" "}
+                <Link to={`/topics/${topic}`} className="text-blue-500 underline">Topics</Link> &gt;{" "}
+                <Link to={`/game-modes/${topic}`} className="text-blue-500 underline">Game Modes</Link> &gt;{" "}
+                <span className="text-gray-700">Exercise</span>
+            </nav>
+
             <h1 className="text-xl font-bold">{exercise.name}</h1>
             <p>{exercise.description}</p>
 
             <div className="flex justify-between items-center mt-4">
                 <button
-                    onClick={() => navigate(-1)} // Go back to the previous page
+                    onClick={() => navigate(-1)} // Go back
                     className="bg-gray-500 text-white px-4 py-2 rounded"
                 >
-                    Back to Topics
+                    Back
+                </button>
+                <button
+                    onClick={() => navigate("/modules")} // Go to modules
+                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                >
+                    Restart
+                </button>
+                <button
+                    onClick={() => navigate("/")} // Go to dashboard
+                    className="bg-green-500 text-white px-4 py-2 rounded"
+                >
+                    Go Home
                 </button>
             </div>
 
-            {/* Render ClassicModeExercise */}
             {exercise.name === "Classic Mode" && (
                 <ClassicModeExercise exercise={exercise} onComplete={handleComplete} />
             )}

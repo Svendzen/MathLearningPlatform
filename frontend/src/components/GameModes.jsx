@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import api from "../api";
 
 function GameModes() {
-    const { topic } = useParams(); // Topic from URL path parameter
+    const { topic } = useParams();
     const [gameModes, setGameModes] = useState([]);
 
     useEffect(() => {
@@ -21,11 +21,18 @@ function GameModes() {
 
     return (
         <div className="p-4">
+            {/* Breadcrumb navigation */}
+            <nav className="mb-4">
+                <Link to="/modules" className="text-blue-500 underline">Modules</Link> &gt;{" "}
+                <Link to={`/topics/${topic}`} className="text-blue-500 underline">Topics</Link> &gt;{" "}
+                <span className="text-gray-700">Game Modes</span>
+            </nav>
+
             <h1 className="text-xl font-bold">Game Modes for {topic}</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 {gameModes.map((mode) => (
                     <Link
-                        to={`/exercise/${mode.id}?topic=${topic}`} // Add topic as query parameter
+                        to={`/exercise/${mode.id}?topic=${topic}`}
                         key={mode.id}
                         className="block bg-primary-500 text-white p-4 rounded shadow"
                     >
