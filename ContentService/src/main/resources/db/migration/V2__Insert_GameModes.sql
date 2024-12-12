@@ -2,7 +2,7 @@
 INSERT INTO content_schema.game_mode (name, description, total_questions, max_points_per_question, seconds_per_question, is_score_based_on_time, priority)
 VALUES
     ('Classic Mode', 'Answer as quickly as possible to maximize your score. Points decrease the longer you take.', 10, 100, 10, TRUE, 1),
-    ('Multiple Choice', 'Choose the correct answer from four options. No time limit.', 10, 100, NULL, FALSE, 2);
+    ('Multiple Choice', 'Choose the correct answer from four options. No time limit.', 10, 100, 0, FALSE, 2);
 
 -- Map supported MathTopics to the game modes
 INSERT INTO content_schema.game_mode_supported_topics (game_mode_id, math_topic)
