@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.svendzen.contentservice.eventdriven.ExerciseCompletedEvent;
 import org.svendzen.contentservice.eventdriven.ExerciseCompletedPublisher;
+import org.svendzen.contentservice.models.DynamicMathProblem;
 import org.svendzen.contentservice.models.GameMode;
 import org.svendzen.contentservice.models.MathProblem;
 import org.svendzen.contentservice.models.MathTopic;
@@ -67,6 +68,15 @@ public class GameModeService {
 
         // Generate or fetch math problems
         List<MathProblem> problems = mathProblemService.getProblems(topic, gameMode.getTotalQuestions(), true, true);
+
+        // Assign unique IDs to each problem if they don't already have one
+        long tempIdCounter = 1;
+        for (MathProblem problem : problems) {
+            if (problem instanceof DynamicMathProblem dynamicProblem) {
+                dynamicProblem.setId(tempIdCounter++); // Assign sequential IDs to dynamic problems
+            }
+        }
+
         gameMode.setProblems(problems);
 
         return gameMode;
