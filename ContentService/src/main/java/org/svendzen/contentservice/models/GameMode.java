@@ -7,18 +7,6 @@ import java.util.List;
 
 /**
  * Represents a game mode with predefined rules and settings for math exercises.
- * A GameMode can support multiple MathTopics and has a priority for display ordering.
- *
- * Key Field Details:
- * - `name`: Name of the game mode (e.g., "Classic Mode").
- * - `description`: A brief description of the game mode's rules.
- * - `totalQuestions`: Default number of questions in this game mode.
- * - `maxPointsPerQuestion`: Maximum points achievable per question.
- * - `secondsPerQuestion`: Time limit per question in seconds.
- *      - `0` indicates no time limit.
- * - `isScoreBasedOnTime`: Indicates whether scoring is based on the time taken to answer.
- * - `supportedMathTopics`: List of MathTopics this GameMode supports.
- * - `priority`: Determines the display order of game modes (lower number = higher priority).
  */
 @Entity
 @Data
@@ -34,23 +22,26 @@ public class GameMode {
     @Column(nullable = false)
     private String description; // Description of the game mode, must not be null or empty.
 
-    private int totalQuestions; // Must be non-negative.
+    @Column(nullable = false)
+    private int totalQuestions; // Total number of questions in this game mode.
 
-    private int maxPointsPerQuestion; // Must be non-negative.
+    @Column(nullable = false)
+    private int maxPointsPerQuestion; // Maximum points per question, default is 1000.
 
-    @Column(nullable = false, columnDefinition = "int default 0")
-    private int secondsPerQuestion; // Default to 0 for no time limit; must be non-negative.
+    @Column(nullable = false)
+    private int millisecondsPerQuestion; // Time per question in milliseconds, default is 10000.
 
-    private boolean isScoreBasedOnTime; // Indicates if scoring is time-sensitive.
+    @Column(nullable = false)
+    private boolean isScoreBasedOnTime; // Indicates if scoring depends on time taken.
 
     @ElementCollection(targetClass = MathTopic.class)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "game_mode_supported_topics", joinColumns = @JoinColumn(name = "game_mode_id"))
     @Column(name = "math_topic")
-    private List<MathTopic> supportedMathTopics; // Must not be empty for a valid GameMode.
+    private List<MathTopic> supportedMathTopics; // Supported math topics for this game mode.
 
     @Column(nullable = false)
-    private int priority; // Determines display order; must be positive.
+    private int priority; // Determines display order; lower values are higher priority.
 
     @Transient
     private List<MathProblem> problems; // Transient field; not persisted in the database.
@@ -72,18 +63,18 @@ public class GameMode {
         }
 
         // Validate totalQuestions
-        if (totalQuestions < 0) {
-            throw new IllegalArgumentException("totalQuestions must be non-negative.");
+        if (totalQuestions <= 0) {
+            throw new IllegalArgumentException("totalQuestions must be greater than 0.");
         }
 
         // Validate maxPointsPerQuestion
-        if (maxPointsPerQuestion < 0) {
-            throw new IllegalArgumentException("maxPointsPerQuestion must be non-negative.");
+        if (maxPointsPerQuestion <= 0) {
+            throw new IllegalArgumentException("maxPointsPerQuestion must be greater than 0.");
         }
 
-        // Validate secondsPerQuestion
-        if (secondsPerQuestion < 0) {
-            throw new IllegalArgumentException("secondsPerQuestion cannot be negative.");
+        // Validate millisecondsPerQuestion
+        if (millisecondsPerQuestion < 0) {
+            throw new IllegalArgumentException("millisecondsPerQuestion cannot be negative.");
         }
 
         // Validate priority
