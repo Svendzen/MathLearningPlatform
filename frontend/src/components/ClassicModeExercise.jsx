@@ -1,14 +1,15 @@
-import {useState, useRef, useEffect, useCallback} from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import api from "../api.js";
 
-function ClassicModeExercise({ exercise}) {
+function ClassicModeExercise({ exercise }) {
     const [currentIndex, setCurrentIndex] = useState(0); // Tracks the current problem index
     const [answers, setAnswers] = useState([]); // Stores user's answers and scores
     const [timeLeft, setTimeLeft] = useState(exercise.millisecondsPerQuestion); // Timer in milliseconds
     const [feedback, setFeedback] = useState(null); // Feedback message for the user
     const [score, setScore] = useState(0); // Accumulated score across problems
+    const [questionSubmitted, setQuestionSubmitted] = useState(false); // Prevent double submissions
     const inputRef = useRef(null); // Ref for the input field
     const timerRef = useRef(null); // Ref for the timer interval
     const navigate = useNavigate();
@@ -17,77 +18,110 @@ function ClassicModeExercise({ exercise}) {
     const totalMilliseconds = exercise.millisecondsPerQuestion;
     const currentProblem = exercise.problems[currentIndex]; // Current math problem
 
-    const handleAnswerSubmit = useCallback((answer) => {
-        if (feedback) return; // Prevent user actions while feedback is being shown
+    const handleAnswerSubmit = useCallback(
+        (answer) => {
+            if (feedback || questionSubmitted) return; // Prevent user actions while feedback is being shown or already submitted
 
-        // Calculate remaining time in milliseconds
-        const elapsed = totalMilliseconds - timeLeft;
-        const remainingMs = Math.max(totalMilliseconds - elapsed, 0);
+            setQuestionSubmitted(true); // Mark question as submitted
 
-        // Check if the user's answer is correct and calculate score
-        const isCorrect = answer === currentProblem.answer;
-        const earnedScore = isCorrect
-            ? Math.floor((exercise.maxPointsPerQuestion * remainingMs) / totalMilliseconds)
-            : 0;
+            // Calculate remaining time in milliseconds
+            const elapsed = totalMilliseconds - timeLeft;
+            const remainingMs = Math.max(totalMilliseconds - elapsed, 0);
 
-        setScore((prev) => prev + earnedScore); // Update total score
+            // Check if the user's answer is correct and calculate score
+            const isCorrect = answer === currentProblem.answer;
+            const earnedScore = isCorrect
+                ? Math.floor(
+                    (exercise.maxPointsPerQuestion * remainingMs) /
+                    totalMilliseconds
+                )
+                : 0;
 
-        // Feedback message for the user based on their input
-        const answerFeedback = answer === null
-            ? "Time's up! Moving to the next question."
-            : isCorrect
-                ? `Correct! +${earnedScore} points.`
-                : "Incorrect. Try the next one!";
+            setScore((prev) => prev + earnedScore); // Update total score
 
-        // Stop the timer while feedback is displayed
-        clearInterval(timerRef.current);
+            // Feedback message for the user based on their input
+            const answerFeedback =
+                answer === null
+                    ? "Time's up! Moving to the next question."
+                    : isCorrect
+                        ? `Correct! +${earnedScore} points.`
+                        : "Incorrect. Try the next one!";
 
-        // Show feedback briefly before proceeding to the next question
-        setFeedback(answerFeedback);
+            // Stop the timer while feedback is displayed
+            clearInterval(timerRef.current);
 
-        setTimeout(() => {
-            setAnswers([
-                ...answers,
-                { problemId: currentProblem.id, answer, earnedScore }, // Add user response to answers
-            ]);
+            // Show feedback briefly before proceeding to the next question
+            setFeedback(answerFeedback);
 
-            if (currentIndex < exercise.problems.length - 1) {
-                setCurrentIndex(currentIndex + 1); // Move to the next problem
-            } else {
-                // If this was the last question, calculate final stats and complete the exercise
-                const completionTime = exercise.millisecondsPerQuestion * exercise.problems.length - timeLeft;
+            setTimeout(() => {
+                setAnswers([
+                    ...answers,
+                    {
+                        problemId: currentProblem.id,
+                        answer,
+                        earnedScore,
+                    }, // Add user response to answers
+                ]);
 
-                const result = {
-                    studentId: 1, // Mocked value; replace with actual student ID
-                    mathTopic: exercise.problems[0].type,
-                    gameMode: exercise.name,
-                    totalQuestions: exercise.problems.length,
-                    correctAnswers: answers.filter(
-                        (a) =>
-                            a.answer ===
-                            exercise.problems.find((p) => p.id === a.problemId).answer
-                    ).length,
-                    score: score + earnedScore, // Add current score to total
-                    scorePercentage: Math.round(
-                        ((score + earnedScore) / (exercise.maxPointsPerQuestion * exercise.problems.length)) * 100
-                    ),
-                    completionTime: Math.floor(completionTime / 1000), // Convert to seconds
-                    completionDate: new Date().toISOString(),
-                };
+                if (currentIndex < exercise.problems.length - 1) {
+                    setCurrentIndex(currentIndex + 1); // Move to the next problem
+                } else {
+                    // If this was the last question, calculate final stats and complete the exercise
+                    const completionTime =
+                        exercise.millisecondsPerQuestion *
+                        exercise.problems.length -
+                        timeLeft;
 
-                // Send result to the backend
-                api.post("/content/gamemode/complete", result)
-                    .then(() => console.log("Result sent to backend"))
-                    .catch((err) => console.error("Error sending result:", err));
+                    const result = {
+                        studentId: 1, // Mocked value; replace with actual student ID
+                        mathTopic: exercise.problems[0].type,
+                        gameMode: exercise.name,
+                        totalQuestions: exercise.problems.length,
+                        correctAnswers: answers.filter(
+                            (a) =>
+                                a.answer ===
+                                exercise.problems.find(
+                                    (p) => p.id === a.problemId
+                                ).answer
+                        ).length,
+                        score: score + earnedScore, // Add current score to total
+                        scorePercentage: Math.round(
+                            ((score + earnedScore) /
+                                (exercise.maxPointsPerQuestion *
+                                    exercise.problems.length)) *
+                            100
+                        ),
+                        completionTime: Math.floor(completionTime / 1000), // Convert to seconds
+                        completionDate: new Date().toISOString(),
+                    };
 
-                // Navigate to the ResultScreen with the exercise results
-                navigate("/result", { state: { result } });
-            }
+                    // Send result to the backend
+                    api.post("/content/gamemode/complete", result)
+                        .then(() => console.log("Result sent to backend"))
+                        .catch((err) =>
+                            console.error("Error sending result:", err)
+                        );
 
-            setFeedback(null); // Clear feedback for the next question
-        }, 1500); // Duration of feedback display in milliseconds
-    },
-        [feedback, totalMilliseconds, timeLeft, currentProblem, currentIndex, exercise, answers, score, navigate]
+                    // Navigate to the ResultScreen with the exercise results
+                    navigate("/result", { state: { result } });
+                }
+
+                setFeedback(null); // Clear feedback for the next question
+                setQuestionSubmitted(false); // Reset submission status
+            }, 1500); // Duration of feedback display in milliseconds
+        },
+        [
+            feedback,
+            questionSubmitted,
+            totalMilliseconds,
+            timeLeft,
+            currentProblem,
+            currentIndex,
+            exercise,
+            answers,
+            score,
+            navigate,
+        ]
     );
 
     useEffect(() => {
@@ -126,13 +160,17 @@ function ClassicModeExercise({ exercise}) {
                 Problem {currentIndex + 1} of {exercise.problems.length}:
             </p>
             <p className="text-2xl font-bold">{currentProblem.question}</p>
-            <p className="text-red-500 font-medium">Time left: {(timeLeft / 1000).toFixed(1)}s</p>
+            <p className="text-red-500 font-medium">
+                Time left: {(timeLeft / 1000).toFixed(1)}s
+            </p>
             <p className="text-green-500 font-medium">Score: {score}</p>
 
             {feedback && (
                 <p
                     className={`text-lg font-medium ${
-                        feedback.includes("Correct") ? "text-green-500" : "text-red-500"
+                        feedback.includes("Correct")
+                            ? "text-green-500"
+                            : "text-red-500"
                     }`}
                 >
                     {feedback}
@@ -152,7 +190,9 @@ function ClassicModeExercise({ exercise}) {
                 }}
             />
             <button
-                onClick={() => handleAnswerSubmit(Number(inputRef.current.value))}
+                onClick={() =>
+                    handleAnswerSubmit(Number(inputRef.current.value))
+                }
                 className="bg-blue-500 text-white px-4 py-2 mt-2 rounded"
                 disabled={!!feedback} // Disable button during feedback
             >
@@ -173,7 +213,10 @@ ClassicModeExercise.propTypes = {
             PropTypes.shape({
                 id: PropTypes.number.isRequired,
                 question: PropTypes.string.isRequired,
-                answer: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+                answer: PropTypes.oneOfType([
+                    PropTypes.string,
+                    PropTypes.number,
+                ]).isRequired,
                 type: PropTypes.string.isRequired,
             })
         ).isRequired,
