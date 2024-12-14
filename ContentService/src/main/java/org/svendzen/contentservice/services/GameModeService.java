@@ -11,6 +11,7 @@ import org.svendzen.contentservice.models.GameMode;
 import org.svendzen.contentservice.models.MathProblem;
 import org.svendzen.contentservice.models.MathTopic;
 import org.svendzen.contentservice.repositories.GameModeRepository;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,11 +27,14 @@ public class GameModeService {
     private final MathProblemService mathProblemService;
     private final ExerciseCompletedPublisher publisher;
 
+    private final RabbitTemplate rabbitTemplate;
+
     @Autowired
-    public GameModeService(GameModeRepository gameModeRepository, MathProblemService mathProblemService, ExerciseCompletedPublisher publisher) {
+    public GameModeService(GameModeRepository gameModeRepository, MathProblemService mathProblemService, ExerciseCompletedPublisher publisher, RabbitTemplate rabbitTemplate) {
         this.gameModeRepository = gameModeRepository;
         this.mathProblemService = mathProblemService;
         this.publisher = publisher;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     /**
@@ -94,16 +98,17 @@ public class GameModeService {
     }
 
     public void completeExercise(ExerciseCompletedEvent exerciseEvent) {
-        // Validate event data (optional)
+        // Validate the input
         if (exerciseEvent == null || exerciseEvent.getStudentId() == null || exerciseEvent.getMathTopic() == null) {
             throw new IllegalArgumentException("Invalid ExerciseCompletedEvent data.");
         }
 
-        // Log the completion
+        // Log the event for monitoring
         log.info("Processing exercise completion: {}", exerciseEvent);
 
         // Publish the event to RabbitMQ
-        publisher.sendExerciseCompletedEvent(exerciseEvent);
+        rabbitTemplate.convertAndSend("exerciseCompletedQueue", exerciseEvent);
+        log.info("ExerciseCompletedEvent published to RabbitMQ: {}", exerciseEvent);
     }
 }
 
