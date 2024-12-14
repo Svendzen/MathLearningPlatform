@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import {useState, useRef, useEffect, useCallback} from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import api from "../api.js";
@@ -17,37 +17,7 @@ function ClassicModeExercise({ exercise}) {
     const totalMilliseconds = exercise.millisecondsPerQuestion;
     const currentProblem = exercise.problems[currentIndex]; // Current math problem
 
-    useEffect(() => {
-        // Starts the timer if no feedback is being shown
-        if (!feedback) {
-            const startTime = Date.now();
-            timerRef.current = setInterval(() => {
-                const elapsed = Date.now() - startTime;
-                const remaining = Math.max(totalMilliseconds - elapsed, 0);
-                setTimeLeft(remaining); // Update time left in milliseconds
-                if (remaining === 0) clearInterval(timerRef.current); // Stop timer if no time remains
-            }, 50); // Frequent updates ensure smoother countdown
-        }
-
-        // Clears the interval when the timer stops or feedback is shown
-        return () => clearInterval(timerRef.current);
-    }, [feedback, totalMilliseconds]);
-
-    useEffect(() => {
-        // Automatically handles timeout when the timer reaches zero
-        if (timeLeft === 0 && !feedback) {
-            handleAnswerSubmit(null); // Timeout submits a `null` answer
-        }
-    }, [timeLeft, feedback]);
-
-    useEffect(() => {
-        // Resets the timer and clears the input field for the next question
-        setTimeLeft(exercise.millisecondsPerQuestion); // Reset time for the new question
-        if (inputRef.current) inputRef.current.value = ""; // Clear previous input
-        inputRef.current?.focus(); // Refocus input field for better UX
-    }, [currentIndex]);
-
-    const handleAnswerSubmit = (answer) => {
+    const handleAnswerSubmit = useCallback((answer) => {
         if (feedback) return; // Prevent user actions while feedback is being shown
 
         // Calculate remaining time in milliseconds
@@ -116,7 +86,39 @@ function ClassicModeExercise({ exercise}) {
 
             setFeedback(null); // Clear feedback for the next question
         }, 1500); // Duration of feedback display in milliseconds
-    };
+    },
+        [feedback, totalMilliseconds, timeLeft, currentProblem, currentIndex, exercise, answers, score, navigate]
+    );
+
+    useEffect(() => {
+        // Starts the timer if no feedback is being shown
+        if (!feedback) {
+            const startTime = Date.now();
+            timerRef.current = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                const remaining = Math.max(totalMilliseconds - elapsed, 0);
+                setTimeLeft(remaining); // Update time left in milliseconds
+                if (remaining === 0) clearInterval(timerRef.current); // Stop timer if no time remains
+            }, 50); // Frequent updates ensure smoother countdown
+        }
+
+        // Clears the interval when the timer stops or feedback is shown
+        return () => clearInterval(timerRef.current);
+    }, [feedback, totalMilliseconds]);
+
+    useEffect(() => {
+        // Automatically handles timeout when the timer reaches zero
+        if (timeLeft === 0 && !feedback) {
+            handleAnswerSubmit(null); // Timeout submits a `null` answer
+        }
+    }, [timeLeft, feedback, handleAnswerSubmit]);
+
+    useEffect(() => {
+        // Resets the timer and clears the input field for the next question
+        setTimeLeft(exercise.millisecondsPerQuestion); // Reset time for the new question
+        if (inputRef.current) inputRef.current.value = ""; // Clear previous input
+        inputRef.current?.focus(); // Refocus input field for better UX
+    }, [currentIndex, exercise.millisecondsPerQuestion]);
 
     return (
         <div className="mt-4">
