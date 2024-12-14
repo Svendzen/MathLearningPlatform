@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 function ResultScreen() {
     const navigate = useNavigate();
@@ -7,7 +7,27 @@ function ResultScreen() {
     const { result } = location.state || {}; // Safely access result
 
     if (!result) {
-        return <p>Result not available. Please complete an exercise first.</p>;
+        // Redirect to modules page if no result is available
+        return (
+            <div className="p-4">
+                <h1 className="text-2xl font-bold text-red-500">Oops!</h1>
+                <p className="mt-2">No result found. Please complete an exercise first.</p>
+                <div className="mt-4 space-y-2">
+                    <Link
+                        to="/modules"
+                        className="bg-gray-500 text-white px-4 py-2 rounded block text-center"
+                    >
+                        Back to Modules
+                    </Link>
+                    <Link
+                        to="/"
+                        className="bg-green-500 text-white px-4 py-2 rounded block text-center"
+                    >
+                        Dashboard
+                    </Link>
+                </div>
+            </div>
+        );
     }
 
     return (
@@ -54,7 +74,7 @@ ResultScreen.propTypes = {
         score: PropTypes.number.isRequired,
         scorePercentage: PropTypes.number.isRequired,
         completionTime: PropTypes.number.isRequired,
-    }).isRequired,
+    }),
 };
 
 export default ResultScreen;
