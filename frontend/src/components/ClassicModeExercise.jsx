@@ -54,8 +54,8 @@ function ClassicModeExercise({ exercise }) {
             setFeedback(answerFeedback);
 
             setTimeout(() => {
-                setAnswers([
-                    ...answers,
+                setAnswers((prevAnswers) => [
+                    ...prevAnswers,
                     {
                         problemId: currentProblem.id,
                         answer,
@@ -64,7 +64,7 @@ function ClassicModeExercise({ exercise }) {
                 ]);
 
                 if (currentIndex < exercise.problems.length - 1) {
-                    setCurrentIndex(currentIndex + 1); // Move to the next problem
+                    setCurrentIndex((prevIndex) => prevIndex + 1); // Move to the next problem
                 } else {
                     // If this was the last question, calculate final stats and complete the exercise
                     const completionTime =
@@ -182,7 +182,7 @@ function ClassicModeExercise({ exercise }) {
                 type="number"
                 placeholder="Your answer"
                 className="border p-2 mt-2"
-                disabled={!!feedback} // Disable input during feedback
+                disabled={!!feedback || questionSubmitted} // Disable input during feedback or processing
                 onKeyDown={(e) => {
                     if (e.key === "Enter") {
                         handleAnswerSubmit(Number(e.target.value));
@@ -194,7 +194,7 @@ function ClassicModeExercise({ exercise }) {
                     handleAnswerSubmit(Number(inputRef.current.value))
                 }
                 className="bg-blue-500 text-white px-4 py-2 mt-2 rounded"
-                disabled={!!feedback} // Disable button during feedback
+                disabled={!!feedback || questionSubmitted} // Disable button during feedback or processing
             >
                 Submit
             </button>
