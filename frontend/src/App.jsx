@@ -5,6 +5,8 @@ import Topics from "./components/Topics";
 import GameModes from "./components/GameModes";
 import Exercise from "./components/Exercise";
 import ResultScreen from "./components/ResultScreen.jsx";
+import LoginPage from "./components/auth/LoginPage.jsx";
+import SignupPage from "./components/auth/SignupPage.jsx";
 
 function App() {
     return (
@@ -16,6 +18,8 @@ function App() {
                 <Route path="/game-modes/:topic" element={<GameModes />} />
                 <Route path="/exercise/:gameMode" element={<Exercise />} />
                 <Route path="/result" element={<ResultScreen />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
             </Routes>
         </div>
     );
