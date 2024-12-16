@@ -22,7 +22,12 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())  // Disable CSRF protection
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/h2-console/**", "/api/v1/users/authenticate", "/api/v1/users/register").permitAll()  // Permit public endpoints
+                        .requestMatchers(
+                                "/h2-console/**",
+                                "/api/v1/users/authenticate",
+                                "/api/v1/users/register",
+                                "/actuator/health"
+                        ).permitAll()  // Permit public endpoints
                         .anyRequest().authenticated()  // All other endpoints require authentication
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)  // Add JWT filter
