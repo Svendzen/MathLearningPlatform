@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.svendzen.userservice.services.UserService;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -24,7 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtUtil jwtUtil;
 
     @Autowired
-    private org.svendzen.userservice.services.UserService userService;
+    private UserService userService;
 
     @Override
     protected void doFilterInternal(
@@ -74,6 +75,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // Continue the filter chain
         filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        // Skip JWT processing for public endpoints
+        String path = request.getRequestURI();
+        return path.equals("/api/v1/users/register") || path.equals("/api/v1/users/authenticate") || path.startsWith("/actuator");
     }
 
     /**

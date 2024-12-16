@@ -1,4 +1,3 @@
-// SignUp Component
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api";
@@ -37,6 +36,10 @@ function SignUp() {
             });
             navigate("/login"); // Redirect to login after successful sign-up
         } catch (err) {
+            console.error("Signup failed, error:", err); // Log error details
+            if (err.response) {
+                console.error("Server responded with:", err.response.status, err.response.data);
+            }
             setError("Error signing up. Please check your details and try again.");
         }
     };

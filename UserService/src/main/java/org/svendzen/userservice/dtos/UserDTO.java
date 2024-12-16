@@ -1,9 +1,6 @@
 package org.svendzen.userservice.dtos;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,8 +31,8 @@ public class UserDTO {
     @NotBlank(groups = Registration.class, message = "Last name is required")
     private String lastName;
 
-    @NotBlank(groups = Registration.class, message = "Role is required")
-    private Role role; // Role (e.g., STUDENT, TEACHER, PARENT)
+    @NotNull(groups = Registration.class, message = "Role is required")
+    private Role role; // Enum type: STUDENT, TEACHER, PARENT
 
     // Validation group interfaces - for context-specific validation
     public interface Registration {}
