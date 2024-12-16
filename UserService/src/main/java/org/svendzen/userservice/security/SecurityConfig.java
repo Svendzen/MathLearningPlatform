@@ -30,7 +30,7 @@ public class SecurityConfig {
                         ).permitAll()  // Permit public endpoints
                         .anyRequest().authenticated()  // All other endpoints require authentication
                 )
-                //.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)  // Add JWT filter
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)  // Add JWT filter
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()));  // Disable X-Frame-Options for H2 console
 
         return http.build();
