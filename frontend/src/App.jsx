@@ -7,19 +7,80 @@ import Exercise from "./components/Exercise";
 import ResultScreen from "./components/ResultScreen.jsx";
 import LoginPage from "./components/auth/LoginPage.jsx";
 import SignupPage from "./components/auth/SignupPage.jsx";
+import PrivateRoute from "./components/auth/PrivateRoute";
+import RedirectIfAuthenticated from "./components/auth/RedirectIfAuthenticated.jsx";
 
 function App() {
     return (
         <div className="min-h-screen bg-primary-50 text-gray-900">
             <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/modules" element={<Modules />} />
-                <Route path="/topics/:module" element={<Topics />} />
-                <Route path="/game-modes/:topic" element={<GameModes />} />
-                <Route path="/exercise/:gameMode" element={<Exercise />} />
-                <Route path="/result" element={<ResultScreen />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignupPage />} />
+                {/* Public routes with redirect for authenticated users */}
+                <Route
+                    path="/login"
+                    element={
+                        <RedirectIfAuthenticated>
+                            <LoginPage />
+                        </RedirectIfAuthenticated>
+                    }
+                />
+                <Route
+                    path="/signup"
+                    element={
+                        <RedirectIfAuthenticated>
+                            <SignupPage />
+                        </RedirectIfAuthenticated>
+                    }
+                />
+
+                {/* Private routes */}
+                <Route
+                    path="/"
+                    element={
+                        <PrivateRoute>
+                            <Dashboard />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/modules"
+                    element={
+                        <PrivateRoute>
+                            <Modules />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/topics/:module"
+                    element={
+                        <PrivateRoute>
+                            <Topics />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/game-modes/:topic"
+                    element={
+                        <PrivateRoute>
+                            <GameModes />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/exercise/:gameMode"
+                    element={
+                        <PrivateRoute>
+                            <Exercise />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/result"
+                    element={
+                        <PrivateRoute>
+                            <ResultScreen />
+                        </PrivateRoute>
+                    }
+                />
             </Routes>
         </div>
     );
