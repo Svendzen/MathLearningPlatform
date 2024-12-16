@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.svendzen.userservice.models.Role;
 import org.svendzen.userservice.models.User;
 
 @Getter
@@ -33,6 +34,9 @@ public class UserDTO {
     @NotBlank(groups = Registration.class, message = "Last name is required")
     private String lastName;
 
+    @NotBlank(groups = Registration.class, message = "Role is required")
+    private Role role; // Role (e.g., STUDENT, TEACHER, PARENT)
+
     // Validation group interfaces - for context-specific validation
     public interface Registration {}
     public interface Authentication {}
@@ -44,6 +48,7 @@ public class UserDTO {
         user.setPassword(this.password);
         user.setFirst_name(this.firstName);
         user.setLast_name(this.lastName);
+        user.setRole(this.role);
         return user;
     }
 }
