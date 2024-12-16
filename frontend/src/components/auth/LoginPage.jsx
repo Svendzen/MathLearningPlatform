@@ -12,7 +12,7 @@ function Login() {
         e.preventDefault();
         setError(""); // Reset error state
         try {
-            const response = await api.post("/auth/login", { username: email, password });
+            const response = await api.post("/users/authenticate", { username: email, password });
             localStorage.setItem("token", response.token);
             localStorage.setItem("role", response.role);
             navigate("/dashboard"); // Redirect to dashboard

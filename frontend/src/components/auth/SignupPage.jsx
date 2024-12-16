@@ -28,11 +28,11 @@ function SignUp() {
         }
 
         try {
-            await api.post("/auth/signup", {
+            await api.post("/users/register", {
                 username: email,
                 password,
-                first_name: firstName,
-                last_name: lastName,
+                firstName,
+                lastName,
                 role,
             });
             navigate("/login"); // Redirect to login after successful sign-up
