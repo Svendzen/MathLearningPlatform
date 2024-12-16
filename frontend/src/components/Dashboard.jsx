@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import LogoutButton from "./LogoutButton.jsx";
 
 function Dashboard() {
     return (
@@ -19,6 +20,7 @@ function Dashboard() {
                 <Link to="/achievements" className="inline-block bg-yellow-500 text-white px-4 py-2 rounded">
                     View Achievements
                 </Link>
+                <LogoutButton />
             </div>
         </div>
     );
