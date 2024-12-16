@@ -27,10 +27,18 @@ spring:
           uri: lb://gamificationservice
           predicates:
             - Path=/api/v1/gamification/**    # Routes all requests with "/api/v1/gamification/" to Gamification Service
+      globalcors:
+        cors-configurations:
+          '[/**]': # Allow all paths
+            allowed-origins: "http://localhost:3000"
+            allowed-methods: "*"
+            allowed-headers: "*"
+            allow-credentials: true
 
       discovery:
         locator:
           enabled: true  # Enables service discovery for routing
+
 
     consul:
       host: localhost
