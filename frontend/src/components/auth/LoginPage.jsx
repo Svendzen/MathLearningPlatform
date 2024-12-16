@@ -1,3 +1,4 @@
+// Login Component
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api";
@@ -13,13 +14,35 @@ function Login() {
         setError(""); // Reset error state
         try {
             const response = await api.post("/users/authenticate", { username: email, password });
+
+            console.log("Login successful, response:", response); // Log response
+
+            // Save JWT and role to localStorage
             localStorage.setItem("token", response.token);
             localStorage.setItem("role", response.role);
-            navigate("/dashboard"); // Redirect to dashboard
+
+            // Save username (email used to log in)
+            localStorage.setItem("username", email);
+
+            // Fetch additional user details using the username
+            const userDetailsResponse = await api.get(`/users/username/${email}`, {
+                headers: { Authorization: `Bearer ${response.token}` }, // Include the token in headers
+            });
+
+            localStorage.setItem("firstName", userDetailsResponse.firstName);
+            localStorage.setItem("lastName", userDetailsResponse.lastName);
+
+            navigate("/"); // Redirect to dashboard
         } catch (err) {
+            console.error("Login failed, error:", err); // Log error details
+            if (err.response) {
+                console.error("Server responded with:", err.response.status, err.response.data);
+            }
             setError("Invalid email or password");
         }
     };
+
+
 
     return (
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
@@ -65,3 +88,7 @@ function Login() {
 }
 
 export default Login;
+
+// Comment: Future Enhancement
+// Consider migrating to a global state management solution like React Context or Redux
+// for handling user data (token, role, username) instead of relying on localStorage.

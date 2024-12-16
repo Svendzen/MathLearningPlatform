@@ -1,4 +1,5 @@
 import axios from 'axios';
+import.meta.env
 
 // Create a pre-configured axios instance for our API
 const api = axios.create({
