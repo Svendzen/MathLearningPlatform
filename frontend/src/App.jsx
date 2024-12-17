@@ -7,6 +7,7 @@ import Exercise from "./components/Exercise";
 import ResultScreen from "./components/ResultScreen.jsx";
 import StatsPage from "./components/StatsPage.jsx";
 import AchievementsPage from "./components/AchievementsPage.jsx";
+import ProfilePage from "./components/ProfilePage.jsx";
 import LoginPage from "./components/auth/LoginPage.jsx";
 import SignupPage from "./components/auth/SignupPage.jsx";
 import PrivateRoute from "./components/auth/PrivateRoute";
@@ -96,6 +97,14 @@ function App() {
                     element={
                         <PrivateRoute>
                             <AchievementsPage />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/profile"
+                    element={
+                        <PrivateRoute>
+                            <ProfilePage />
                         </PrivateRoute>
                     }
                 />
