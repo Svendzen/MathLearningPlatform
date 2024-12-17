@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import LogoutButton from "./LogoutButton.jsx";
+import LogoutButton from "../LogoutButton.jsx";
 
-function Dashboard() {
+function StudentDashboard() {
     return (
         <div className="p-4">
             <h1 className="text-2xl font-bold text-primary-700">Welcome to Math Learning!</h1>
@@ -27,4 +27,4 @@ function Dashboard() {
     );
 }
 
-export default Dashboard;
+export default StudentDashboard;
