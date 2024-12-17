@@ -32,7 +32,7 @@ public class StudentProgress {
 
     // Game Mode Stats (e.g., Classic Mode, Multiple Choice)
     @Column(nullable = false)
-    private long rapidFireExercisesCompleted;
+    private long classicExercisesCompleted;
 
     @Column(nullable = false)
     private long multipleChoiceExercisesCompleted;
