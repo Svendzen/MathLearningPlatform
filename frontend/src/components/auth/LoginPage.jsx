@@ -42,12 +42,15 @@ function Login() {
         }
     };
 
-
-
     return (
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
             <div className="w-full max-w-md p-8 bg-white rounded shadow-md">
-                <h1 className="text-2xl font-bold text-center mb-4">Login</h1>
+                <h1 className="text-3xl font-bold text-center text-primary-700 mb-6">
+                    Welcome to Math Learning Platform
+                </h1>
+                <h2 className="text-xl text-center text-gray-600 mb-4">
+                    Sign in to continue
+                </h2>
                 {error && <p className="text-red-500 text-sm">{error}</p>}
                 <form onSubmit={handleLogin}>
                     <div className="mb-4">
