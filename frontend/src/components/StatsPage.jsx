@@ -54,7 +54,15 @@ function StatsPage() {
             <p className="mt-2 text-gray-600">
                 Review your progress and exercise performance.
             </p>
-
+            {/* Back to Dashboard */}
+            <div className="mt-4">
+                <Link
+                    to="/"
+                    className="inline-block bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition duration-300"
+                >
+                    Back to Dashboard
+                </Link>
+            </div>
             {/* General Progress */}
             {progress && (
                 <div className="mt-4 border p-4 rounded shadow">
@@ -124,16 +132,6 @@ function StatsPage() {
                     </p>
                 )}
 
-            </div>
-
-            {/* Back to Dashboard */}
-            <div className="mt-4">
-                <Link
-                    to="/"
-                    className="inline-block bg-gray-500 text-white px-4 py-2 rounded"
-                >
-                    Back to Dashboard
-                </Link>
             </div>
         </div>
     );
