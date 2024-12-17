@@ -1,15 +1,14 @@
 package org.svendzen.contentservice.controllers;
 
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.svendzen.contentservice.dtos.GameModeRequest;
-import org.svendzen.contentservice.eventdriven.ExerciseCompletedEvent;
 import org.svendzen.contentservice.models.GameMode;
 import org.svendzen.contentservice.models.MathTopic;
 import org.svendzen.contentservice.services.GameModeService;
+import org.svendzen.events.ExerciseCompletedEvent;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package org.svendzen.contentservice.eventdriven;
+package org.svendzen.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

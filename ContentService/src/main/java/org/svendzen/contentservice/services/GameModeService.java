@@ -1,16 +1,15 @@
 package org.svendzen.contentservice.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.svendzen.contentservice.eventdriven.ExerciseCompletedEvent;
 import org.svendzen.contentservice.eventdriven.ExerciseCompletedPublisher;
 import org.svendzen.contentservice.models.DynamicMathProblem;
 import org.svendzen.contentservice.models.GameMode;
 import org.svendzen.contentservice.models.MathProblem;
 import org.svendzen.contentservice.models.MathTopic;
 import org.svendzen.contentservice.repositories.GameModeRepository;
+import org.svendzen.events.ExerciseCompletedEvent;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import java.util.List;
@@ -106,9 +105,8 @@ public class GameModeService {
         // Log the event for monitoring
         log.info("Processing exercise completion: {}", exerciseEvent);
 
-        // Publish the event to RabbitMQ
-        rabbitTemplate.convertAndSend("exerciseCompletedQueue", exerciseEvent);
-        log.info("ExerciseCompletedEvent published to RabbitMQ: {}", exerciseEvent);
+        // Use the publisher to publish the event
+        publisher.sendExerciseCompletedEvent(exerciseEvent);
     }
 }
 
