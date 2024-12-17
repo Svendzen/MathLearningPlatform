@@ -10,6 +10,9 @@ function ClassicExercise({ exercise }) {
     const [feedback, setFeedback] = useState(null); // Feedback message for the user
     const [score, setScore] = useState(0); // Accumulated score across problems
     const [questionSubmitted, setQuestionSubmitted] = useState(false); // Prevent double submissions
+    const [navigateNow, setNavigateNow] = useState(false); // New state to trigger navigation
+    const [result, setResult] = useState(null); // Store result for navigation
+
     const inputRef = useRef(null); // Ref for the input field
     const timerRef = useRef(null); // Ref for the timer interval
     const navigate = useNavigate();
@@ -17,8 +20,14 @@ function ClassicExercise({ exercise }) {
     // Total time for each question, derived from the GameMode settings
     const totalMilliseconds = exercise.millisecondsPerQuestion;
     const currentProblem = exercise.problems[currentIndex]; // Current math problem
-
     const [startTime] = useState(Date.now()); // Tracks the exercise start time
+
+    // Navigation trigger after rendering
+    useEffect(() => {
+        if (navigateNow && result) {
+            navigate("/result", { state: { result } });
+        }
+    }, [navigateNow, result, navigate]);
 
     const handleAnswerSubmit = useCallback(
         (answer) => {
