@@ -5,7 +5,7 @@ import ParentDashboard from "./components/dashboards/ParentDashboard.jsx";
 import Modules from "./components/Modules";
 import Topics from "./components/Topics";
 import GameModes from "./components/GameModes";
-import Exercise from "./components/Exercise";
+import Exercise from "./components/exercises/Exercise.jsx";
 import ResultScreen from "./components/ResultScreen.jsx";
 import StatsPage from "./components/StatsPage.jsx";
 import AchievementsPage from "./components/AchievementsPage.jsx";

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import api from "../api.js";
+import api from "../../api.js";
 
 function ClassicExercise({ exercise }) {
     const [currentIndex, setCurrentIndex] = useState(0); // Tracks the current problem index

@@ -1,8 +1,9 @@
 import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import api from "../api";
+import api from "../../api.js";
 import ClassicExercise from "./ClassicExercise.jsx";
-import { validTopics } from "./Topics";
+import { validTopics } from "../Topics.jsx";
+import MultipleChoiceExercise from "../MultipleChoiceExercise.jsx";
 
 function Exercise() {
     const { gameMode } = useParams();
@@ -75,10 +76,8 @@ function Exercise() {
                     Go Home
                 </button>
             </div>
-
-            {exercise.name === "Classic" && (
-                <ClassicExercise exercise={exercise} />
-            )}
+                {exercise.name === "Classic" && <ClassicExercise exercise={exercise} />}
+                {exercise.name === "Multiple Choice" && <MultipleChoiceExercise exercise={exercise} />}
         </div>
     );
 }
