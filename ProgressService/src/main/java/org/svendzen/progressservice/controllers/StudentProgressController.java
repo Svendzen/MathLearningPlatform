@@ -7,7 +7,7 @@ import org.svendzen.progressservice.models.StudentProgress;
 import org.svendzen.progressservice.services.StudentProgressService;
 
 @RestController
-@RequestMapping("/api/v1/progress")
+@RequestMapping("/api/v1/progress/student")
 public class StudentProgressController {
 
     @Autowired

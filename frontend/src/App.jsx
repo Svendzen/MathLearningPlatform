@@ -5,6 +5,8 @@ import Topics from "./components/Topics";
 import GameModes from "./components/GameModes";
 import Exercise from "./components/Exercise";
 import ResultScreen from "./components/ResultScreen.jsx";
+import StatsPage from "./components/StatsPage.jsx";
+import AchievementsPage from "./components/AchievementsPage.jsx";
 import LoginPage from "./components/auth/LoginPage.jsx";
 import SignupPage from "./components/auth/SignupPage.jsx";
 import PrivateRoute from "./components/auth/PrivateRoute";
@@ -78,6 +80,22 @@ function App() {
                     element={
                         <PrivateRoute>
                             <ResultScreen />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/stats"
+                    element={
+                        <PrivateRoute>
+                            <StatsPage />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/achievements"
+                    element={
+                        <PrivateRoute>
+                            <AchievementsPage />
                         </PrivateRoute>
                     }
                 />

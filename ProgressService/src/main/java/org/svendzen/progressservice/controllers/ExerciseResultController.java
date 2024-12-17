@@ -10,7 +10,7 @@ import org.svendzen.progressservice.services.ExerciseResultService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/exercise-results")
+@RequestMapping("/api/v1/progress/exercise-results")
 public class ExerciseResultController {
 
     @Autowired
