@@ -1,15 +1,19 @@
 package org.svendzen.gamificationservice.services;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.svendzen.enums.GameMode;
+import org.svendzen.enums.MathTopic;
 import org.svendzen.gamificationservice.models.StudentTrophy;
-import org.svendzen.gamificationservice.models.TrophyLevel;
 import org.svendzen.gamificationservice.repositories.StudentTrophyRepository;
+import org.svendzen.enums.TrophyLevel;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class StudentTrophyService {
 
     @Autowired
@@ -23,11 +27,11 @@ public class StudentTrophyService {
         } else if (scorePercentage >= 50) {
             return TrophyLevel.BRONZE;
         } else {
-            return null;  // No trophy for scores below 50%
+            return TrophyLevel.NONE;  // No trophy for scores below 50%
         }
     }
 
-    public void handleExerciseResult(int scorePercentage, Long studentId, String mathTopic, String gameMode) {
+    public String handleExerciseResult(int scorePercentage, Long studentId, MathTopic mathTopic, GameMode gameMode) {
         TrophyLevel newTrophy = awardTrophy(scorePercentage);
 
         // Check if student already has a trophy for this mathTopic and gameMode
@@ -42,8 +46,7 @@ public class StudentTrophyService {
             studentTrophy.setTrophyLevel(newTrophy);
 
             studentTrophyRepository.save(studentTrophy);
-            System.out.println("Awarded " + newTrophy + " trophy to student " + studentId + " for " + mathTopic + " in " + gameMode);
-
+            return "New " + newTrophy + " trophy awarded";
         } else if (existingTrophy.isPresent() && newTrophy != null) {
             // Check if the new trophy level is better than the current one
             StudentTrophy existing = existingTrophy.get();
@@ -51,16 +54,17 @@ public class StudentTrophyService {
                 // Upgrade the trophy
                 existing.setTrophyLevel(newTrophy);
                 studentTrophyRepository.save(existing);
-                System.out.println("Upgraded to " + newTrophy + " trophy for student " + studentId + " for " + mathTopic + " in " + gameMode);
+                return "Trophy upgraded to " + newTrophy;
             } else {
-                System.out.println("Student already has a better or equal trophy for " + mathTopic + " in " + gameMode);
+                return "No upgrade: better or equal trophy already exists";
             }
         } else {
-            System.out.println("No trophy awarded. Score too low.");
+            return "No trophy awarded. Score too low.";
         }
     }
+
     // Create: Add or update a trophy
-    public StudentTrophy addOrUpdateTrophy(Long studentId, StudentTrophy trophy) {
+    public StudentTrophy saveOrUpdateTrophy(Long studentId, StudentTrophy trophy) {
         trophy.setStudentId(studentId);
         return studentTrophyRepository.save(trophy);
     }
@@ -71,7 +75,7 @@ public class StudentTrophyService {
     }
 
     // Read: Get specific trophy for a student
-    public Optional<StudentTrophy> getTrophyForExercise(Long studentId, String mathTopic, String gameMode) {
+    public Optional<StudentTrophy> getTrophyForExercise(Long studentId, MathTopic mathTopic, GameMode gameMode) {
         return studentTrophyRepository.findByStudentIdAndMathTopicAndGameMode(studentId, mathTopic, gameMode);
     }
 
