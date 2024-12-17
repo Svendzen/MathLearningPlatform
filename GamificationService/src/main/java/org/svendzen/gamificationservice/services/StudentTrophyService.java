@@ -20,9 +20,9 @@ public class StudentTrophyService {
     private StudentTrophyRepository studentTrophyRepository;
 
     public TrophyLevel awardTrophy(int scorePercentage) {
-        if (scorePercentage >= 90) {
+        if (scorePercentage >= 85) {
             return TrophyLevel.GOLD;
-        } else if (scorePercentage >= 75) {
+        } else if (scorePercentage >= 70) {
             return TrophyLevel.SILVER;
         } else if (scorePercentage >= 50) {
             return TrophyLevel.BRONZE;
