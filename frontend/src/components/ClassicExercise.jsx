@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import api from "../api.js";
 
-function ClassicModeExercise({ exercise }) {
+function ClassicExercise({ exercise }) {
     const [currentIndex, setCurrentIndex] = useState(0); // Tracks the current problem index
     const [answers, setAnswers] = useState([]); // Stores user's answers and scores
     const [timeLeft, setTimeLeft] = useState(exercise.millisecondsPerQuestion); // Timer in milliseconds
@@ -203,7 +203,7 @@ function ClassicModeExercise({ exercise }) {
 }
 
 // PropTypes validation
-ClassicModeExercise.propTypes = {
+ClassicExercise.propTypes = {
     exercise: PropTypes.shape({
         name: PropTypes.string.isRequired,
         description: PropTypes.string.isRequired,
@@ -223,4 +223,4 @@ ClassicModeExercise.propTypes = {
     }).isRequired,
 };
 
-export default ClassicModeExercise;
+export default ClassicExercise;

@@ -43,4 +43,10 @@ public class StudentProgress {
 
     @Column(nullable = false)
     private long subtractionExercisesCompleted;
+
+    @Column(nullable = false)
+    private long multiplicationExercisesCompleted;
+
+    @Column(nullable = false)
+    private long divisionExercisesCompleted;
 }

@@ -48,6 +48,11 @@ public class StudentProgressService {
             case "SUBTRACTION":
                 progress.setSubtractionExercisesCompleted(progress.getSubtractionExercisesCompleted() + 1);
                 break;
+            case "MULTIPLICATION":
+                progress.setMultiplicationExercisesCompleted(progress.getMultiplicationExercisesCompleted() + 1);
+                break;
+            case "DIVISION":
+                progress.setDivisionExercisesCompleted(progress.getDivisionExercisesCompleted());
             default:
                 log.warn("Unhandled math topic: {}", mathTopic);
         }

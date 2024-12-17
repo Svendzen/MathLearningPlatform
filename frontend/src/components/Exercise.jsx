@@ -1,7 +1,7 @@
 import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../api";
-import ClassicModeExercise from "./ClassicModeExercise";
+import ClassicExercise from "./ClassicExercise.jsx";
 import { validTopics } from "./Topics";
 
 function Exercise() {
@@ -76,8 +76,8 @@ function Exercise() {
                 </button>
             </div>
 
-            {exercise.name === "Classic Mode" && (
-                <ClassicModeExercise exercise={exercise} />
+            {exercise.name === "Classic" && (
+                <ClassicExercise exercise={exercise} />
             )}
         </div>
     );

@@ -7,6 +7,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.svendzen.gamificationservice.services.StudentTrophyService;
+import org.svendzen.events.ExerciseCompletedEvent;
 
 @Slf4j
 @Service
