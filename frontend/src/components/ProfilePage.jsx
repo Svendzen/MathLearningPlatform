@@ -59,7 +59,7 @@ function ProfilePage() {
                 </p>
             </div>
 
-            {/* Back to Dashboard */}
+            {/* Back to StudentDashboard */}
             <div className="mt-4">
                 <button
                     onClick={() => navigate("/")}

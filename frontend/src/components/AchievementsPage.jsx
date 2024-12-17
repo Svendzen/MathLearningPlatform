@@ -75,7 +75,7 @@ function AchievementsPage() {
                 <p className="mt-4 text-gray-600">No trophies earned yet. Keep going!</p>
             )}
 
-            {/* Back to Dashboard */}
+            {/* Back to StudentDashboard */}
             <div className="mt-4">
                 <Link
                     to="/"

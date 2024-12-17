@@ -54,7 +54,7 @@ function StatsPage() {
             <p className="mt-2 text-gray-600">
                 Review your progress and exercise performance.
             </p>
-            {/* Back to Dashboard */}
+            {/* Back to StudentDashboard */}
             <div className="mt-4">
                 <Link
                     to="/"

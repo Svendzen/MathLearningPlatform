@@ -1,5 +1,7 @@
 import { Routes, Route } from "react-router-dom";
-import Dashboard from "./components/Dashboard";
+import StudentDashboard from "./components/dashboards/StudentDashboard.jsx";
+import TeacherDashboard from "./components/dashboards/TeacherDashboard.jsx";
+import ParentDashboard from "./components/dashboards/ParentDashboard.jsx";
 import Modules from "./components/Modules";
 import Topics from "./components/Topics";
 import GameModes from "./components/GameModes";
@@ -38,12 +40,33 @@ function App() {
                 {/* Private routes */}
                 <Route
                     path="/"
+                    element={<PrivateRoute />}
+                />
+                <Route
+                    path="/student-dashboard"
                     element={
                         <PrivateRoute>
-                            <Dashboard />
+                            <StudentDashboard />
                         </PrivateRoute>
                     }
                 />
+                <Route
+                    path="/teacher-dashboard"
+                    element={
+                        <PrivateRoute>
+                            <TeacherDashboard />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/parent-dashboard"
+                    element={
+                        <PrivateRoute>
+                            <ParentDashboard />
+                        </PrivateRoute>
+                    }
+                />
+
                 <Route
                     path="/modules"
                     element={
