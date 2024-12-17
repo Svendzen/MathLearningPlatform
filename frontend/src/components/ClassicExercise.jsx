@@ -18,6 +18,8 @@ function ClassicExercise({ exercise }) {
     const totalMilliseconds = exercise.millisecondsPerQuestion;
     const currentProblem = exercise.problems[currentIndex]; // Current math problem
 
+    const [startTime] = useState(Date.now()); // Tracks the exercise start time
+
     const handleAnswerSubmit = useCallback(
         (answer) => {
             if (feedback || questionSubmitted) return; // Prevent user actions while feedback is being shown or already submitted
@@ -54,57 +56,60 @@ function ClassicExercise({ exercise }) {
             setFeedback(answerFeedback);
 
             setTimeout(() => {
-                setAnswers((prevAnswers) => [
-                    ...prevAnswers,
-                    {
-                        problemId: currentProblem.id,
-                        answer,
-                        earnedScore,
-                    }, // Add user response to answers
-                ]);
+                setAnswers((prevAnswers) => {
+                    const updatedAnswers = [
+                        ...prevAnswers,
+                        {
+                            problemId: currentProblem.id,
+                            answer,
+                            earnedScore,
+                        },
+                    ];
 
-                if (currentIndex < exercise.problems.length - 1) {
-                    setCurrentIndex((prevIndex) => prevIndex + 1); // Move to the next problem
-                } else {
-                    // If this was the last question, calculate final stats and complete the exercise
-                    const completionTime =
-                        exercise.millisecondsPerQuestion *
-                        exercise.problems.length -
-                        timeLeft;
+                    if (currentIndex < exercise.problems.length - 1) {
+                        setCurrentIndex((prevIndex) => prevIndex + 1); // Move to the next problem
+                    } else {
+                        // If this was the last question, calculate final stats and complete the exercise
+                        const completionTime = Date.now() - startTime; // Total elapsed time in milliseconds
 
-                    const result = {
-                        studentId: localStorage.getItem("userId"), // Mocked value; replace with actual student ID
-                        mathTopic: exercise.problems[0].type,
-                        gameMode: exercise.name,
-                        totalQuestions: exercise.problems.length,
-                        correctAnswers: answers.filter(
-                            (a) =>
-                                a.answer ===
-                                exercise.problems.find(
-                                    (p) => p.id === a.problemId
-                                ).answer
-                        ).length,
-                        score: score + earnedScore, // Add current score to total
-                        scorePercentage: Math.round(
-                            ((score + earnedScore) /
-                                (exercise.maxPointsPerQuestion *
-                                    exercise.problems.length)) *
-                            100
-                        ),
-                        completionTime: Math.floor(completionTime / 1000), // Convert to seconds
-                        completionDate: new Date().toISOString(),
-                    };
+                        const result = {
+                            studentId: localStorage.getItem("userId"), // Mocked value; replace with actual student ID
+                            mathTopic: exercise.problems[0].type,
+                            gameMode: exercise.name,
+                            totalQuestions: exercise.problems.length,
+                            correctAnswers: updatedAnswers.filter(
+                                (a) =>
+                                    Number(a.answer) ===
+                                    Number(
+                                        exercise.problems.find(
+                                            (p) => p.id === a.problemId
+                                        ).answer
+                                    )
+                            ).length,
+                            score: score + earnedScore, // Add current score to total
+                            scorePercentage: Math.round(
+                                ((score + earnedScore) /
+                                    (exercise.maxPointsPerQuestion *
+                                        exercise.problems.length)) *
+                                100
+                            ),
+                            completionTime: Math.floor(completionTime / 1000), // Convert to seconds
+                            completionDate: new Date().toISOString(),
+                        };
 
-                    // Send result to the backend
-                    api.post("/content/gamemode/complete", result)
-                        .then(() => console.log("Result sent to backend"))
-                        .catch((err) =>
-                            console.error("Error sending result:", err)
-                        );
+                        // Send result to the backend
+                        api.post("/content/gamemode/complete", result)
+                            .then(() => console.log("Result sent to backend"))
+                            .catch((err) =>
+                                console.error("Error sending result:", err)
+                            );
 
-                    // Navigate to the ResultScreen with the exercise results
-                    navigate("/result", { state: { result } });
-                }
+                        // Navigate to the ResultScreen with the exercise results
+                        navigate("/result", { state: { result } });
+                    }
+
+                    return updatedAnswers; // Return updated answers state
+                });
 
                 setFeedback(null); // Clear feedback for the next question
                 setQuestionSubmitted(false); // Reset submission status
@@ -118,11 +123,12 @@ function ClassicExercise({ exercise }) {
             currentProblem,
             currentIndex,
             exercise,
-            answers,
             score,
             navigate,
+            startTime,
         ]
     );
+
 
     useEffect(() => {
         // Starts the timer if no feedback is being shown
@@ -133,7 +139,7 @@ function ClassicExercise({ exercise }) {
                 const remaining = Math.max(totalMilliseconds - elapsed, 0);
                 setTimeLeft(remaining); // Update time left in milliseconds
                 if (remaining === 0) clearInterval(timerRef.current); // Stop timer if no time remains
-            }, 50); // Frequent updates ensure smoother countdown
+            }, 100); // Frequent updates ensure smoother countdown
         }
 
         // Clears the interval when the timer stops or feedback is shown
