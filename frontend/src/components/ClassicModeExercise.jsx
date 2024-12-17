@@ -73,7 +73,7 @@ function ClassicModeExercise({ exercise }) {
                         timeLeft;
 
                     const result = {
-                        studentId: 1, // Mocked value; replace with actual student ID
+                        studentId: localStorage.getItem("userId"), // Mocked value; replace with actual student ID
                         mathTopic: exercise.problems[0].type,
                         gameMode: exercise.name,
                         totalQuestions: exercise.problems.length,

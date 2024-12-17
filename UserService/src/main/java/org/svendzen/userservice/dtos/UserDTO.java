@@ -14,6 +14,8 @@ import org.svendzen.userservice.models.User;
 @AllArgsConstructor
 public class UserDTO {
 
+    private Long id;
+
     @NotBlank(groups = {Registration.class, Authentication.class}, message = "Username is required")
     @Email(groups = {Registration.class}, message = "Please provide a valid e-mail address")
     private String username;

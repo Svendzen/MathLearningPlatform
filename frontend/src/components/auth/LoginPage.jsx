@@ -29,6 +29,7 @@ function Login() {
                 headers: { Authorization: `Bearer ${response.token}` }, // Include the token in headers
             });
 
+            localStorage.setItem("userId", userDetailsResponse.id);
             localStorage.setItem("firstName", userDetailsResponse.firstName);
             localStorage.setItem("lastName", userDetailsResponse.lastName);
 

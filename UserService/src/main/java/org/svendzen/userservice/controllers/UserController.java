@@ -30,6 +30,7 @@ public class UserController {
         if (user.isPresent()) {
             // Map to UserDTO without exposing sensitive information like password
             UserDTO userDTO = new UserDTO(
+                    user.get().getId(),
                     user.get().getUsername(),
                     null, // Do not expose the password
                     user.get().getFirst_name(),
@@ -48,6 +49,7 @@ public class UserController {
         if (user.isPresent()) {
             // Map to UserDTO without exposing sensitive information
             UserDTO userDTO = new UserDTO(
+                    user.get().getId(),
                     user.get().getUsername(),
                     null, // Do not expose the password
                     user.get().getFirst_name(),
