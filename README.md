@@ -47,13 +47,13 @@ If you encounter any issues during the build or deployment process, follow these
    Run the following Maven command in each service directory to clean and rebuild:
    
     ```bash
-    mvn clean install
+    mvn clean install -DskipTests
     ```
 
    or
    
    ```bash
-   mvn clean package
+   mvn clean package -DskipTests
    ```
 
 3. **Rebuild Docker Images**:
