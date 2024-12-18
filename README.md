@@ -4,7 +4,17 @@
 This project is a digital learning platform designed to help young students (grades 1-10) improve their math skills through interactive exercises. The platform provides engaging learning experiences for students while supporting teachers and parents in their educational journey. Built using a microservices architecture, the platform ensures scalability and modularity for future enhancements.
 
 ---
+### User Stories
 
+These are the three priority stories for my project based around the three roles a user can have:
+
+1. **As a student**, I want to practice math through different engaging techniques so that I can improve my skills and stay motivated by tracking my progress.
+2. **As a teacher**, I want to create custom exercises based on specific topics and track my students' performance so I can adapt my lessons and provide support where it's needed most.
+3. **As a parent**, I want to monitor my child's progress and completed exercises so that I can better support their learning at home.
+
+Due to the student part of the app taking significant development time (such as creating the exercises, getting progress, and trophy data), the functionality for parents and teachers was unfortunately not prioritized as much. They exist and have their own dashboard, but beyond that, their features are limited. Expanding their functionality is a key area I would love to focus on in the future.
+
+---
 ## Prerequisites
 
 - **Java 17**
@@ -299,3 +309,32 @@ This section outlines the responsibilities of each service and supporting compon
 - Contains shared DTOs, event objects, and configurations for use across services.
 - Introduced late in development and not fully utilized, but improves maintainability and consistency for future extensions.
 
+---
+
+### Application Flow
+
+This section provides a high-level diagram illustrating how the different components and services in the application communicate with one another.
+
+![Microservices Diagram](./img/microservices_diagram.jpeg)
+
+---
+
+### Communication Details
+
+#### Synchronous Communication
+- All services communicate synchronously through REST API calls.
+- The Gateway acts as the single entry point and routes requests to the appropriate service.
+
+#### Asynchronous Communication
+- The **ContentService** serves as a RabbitMQ publisher and publishes `ExerciseCompletedEvent` messages whenever a student finishes an exercise. These events contain all relevant details about the exercise.
+- The **ProgressService** and **GamificationService** listen for these events:
+  - **ProgressService**:
+    - Creates an `ExerciseResult` record to store the exercise result.
+    - Updates statistics for the student, including correct/incorrect answers, exercises completed (e.g., "Classic" or "Addition").
+  - **GamificationService**:
+    - Uses the score from the event to determine if the student has earned a new trophy, such as "Classic - Subtraction" or "Multiple Choice - Division".
+
+#### Consul Role
+- **Consul** handles service discovery and dynamic configuration management.
+- Enables each microservice to locate and communicate with others efficiently.
+- Simplifies scaling and adding new services by abstracting network details.
