@@ -125,6 +125,16 @@ services:
     networks:
       - learning-services
 
+  frontend:
+    build: ../frontend  # Path to frontend module containing the Dockerfile
+    container_name: frontend
+    ports:
+      - '3000:80'  # Map container port 80 (Nginx) to host port 3000
+    depends_on:
+      - gateway
+    networks:
+      - learning-services
+
 networks:
   learning-services:
     driver: bridge

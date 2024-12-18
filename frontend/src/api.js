@@ -4,7 +4,7 @@ import.meta.env
 // Create a pre-configured axios instance for our API
 const api = axios.create({
     // The baseURL will be automatically prepended to all requests
-    baseURL: '/api/v1',
+    baseURL: 'http://localhost:8000/api/v1',
     // Reasonable timeout to prevent hanging requests
     timeout: 10000,
     // Ensures consistent data handling
