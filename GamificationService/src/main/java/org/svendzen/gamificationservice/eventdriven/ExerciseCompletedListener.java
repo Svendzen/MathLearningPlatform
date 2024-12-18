@@ -21,12 +21,16 @@ public class ExerciseCompletedListener {
         log.info("Received ExerciseCompletedEvent: {}", event);
 
         try {
+            // Convert to Enum-safe values
+            MathTopic mathTopic = MathTopic.valueOf(event.getMathTopic().toUpperCase());
+            GameMode gameMode = GameMode.valueOf(event.getGameMode().toUpperCase().replace(" ", "_"));
+
             // Delegate to the service to handle business logic
             studentTrophyService.handleExerciseResult(
                     event.getScorePercentage(),
                     event.getStudentId(),
-                    MathTopic.valueOf(event.getMathTopic().toUpperCase()), // Convert to Enum
-                    GameMode.valueOf(event.getGameMode().toUpperCase())    // Convert to Enum
+                    mathTopic,
+                    gameMode
             );
 
             log.info("Successfully processed ExerciseCompletedEvent for student: {}", event.getStudentId());

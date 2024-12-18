@@ -31,7 +31,7 @@ public class StudentTrophyService {
         }
     }
 
-    public String handleExerciseResult(int scorePercentage, Long studentId, MathTopic mathTopic, GameMode gameMode) {
+    public void handleExerciseResult(int scorePercentage, Long studentId, MathTopic mathTopic, GameMode gameMode) {
         TrophyLevel newTrophy = awardTrophy(scorePercentage);
 
         // Check if student already has a trophy for this mathTopic and gameMode
@@ -46,20 +46,18 @@ public class StudentTrophyService {
             studentTrophy.setTrophyLevel(newTrophy);
 
             studentTrophyRepository.save(studentTrophy);
-            return "New " + newTrophy + " trophy awarded";
+            log.info("Awarded new {} trophy to student {}", newTrophy, studentId);
         } else if (existingTrophy.isPresent() && newTrophy != null) {
-            // Check if the new trophy level is better than the current one
             StudentTrophy existing = existingTrophy.get();
             if (newTrophy.ordinal() > existing.getTrophyLevel().ordinal()) {
-                // Upgrade the trophy
                 existing.setTrophyLevel(newTrophy);
                 studentTrophyRepository.save(existing);
-                return "Trophy upgraded to " + newTrophy;
+                log.info("Upgraded trophy to {} for student {}", newTrophy, studentId);
             } else {
-                return "No upgrade: better or equal trophy already exists";
+                log.info("No trophy upgrade needed for student {}", studentId);
             }
         } else {
-            return "No trophy awarded. Score too low.";
+            log.info("No trophy awarded. Score too low for student {}", studentId);
         }
     }
 
